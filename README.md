@@ -25,7 +25,7 @@ Para gestionar la base de datos SQLite, instala la dependencia correspondiente:
 pip install db-sqlite3
 ```
 
-# Instalar pip 🛠️
+# 2. Instalar pip 🛠️
 Primero ejecuta:
 
 ```
@@ -38,7 +38,7 @@ Luego, actualiza pip a la versión más reciente:
 python -m pip install --upgrade pip
 ```
 
-# Instalar CustomTkinter 🎨
+# 3. Instalar CustomTkinter 🎨
 Para la interfaz gráfica, este proyecto utiliza CustomTkinter. Instálalo con:
 
 ```
