@@ -29,6 +29,12 @@ entrada7 = tk.Entry(ventana)
 entrada8 = tk.Entry(ventana)
 entrada9 = tk.Entry(ventana)
 
+mensaje = tk.Label (ventana, text="Total")
+dato10 = tk.Entry (ventana)
+
+mensaje2 = tk.Label (ventana, text= "Nombre del cliente:")
+dato11 = tk.Entry (ventana)
+
 texto.grid(column=0, row=0, padx=10, pady=10)
 
 
@@ -62,6 +68,11 @@ dato9.grid(row=8, column=2, padx=10, pady= 10)
 entrada9.grid(row=8, column=3, padx=10, pady=10)
 
 
+mensaje.grid (row = 11, column=0, padx= 10, pady= 10)
+dato10.grid (row= 11, column= 1, padx= 10, pady= 10)
+
+mensaje2.grid ( row= 10, column= 0, padx= 10, pady=10)
+dato11.grid (row= 10, column=1, padx= 10, pady= 10)
 
 
 
@@ -128,6 +139,24 @@ def cerrar_d():
     conectaBaseDatos.close()
     messagebox.showinfo("Advertencia", "Base de datos cerrada correctamente")
 
+def actualizar_c():
+    conectaBaseDatos.execute('''
+        UPDATE clientes
+            SET total = ?
+            WHERE nombre = ? ;
+                ''', (dato10.get(), dato11.get()))
+    
+    # nombre = cur.execute('SELECT nombre, apellido FROM clientes').fetchall()
+    messagebox.showinfo("Actilizacion", f"Cuenta de actializada")
+    conectaBaseDatos.commit()
+
+def borrar_c():
+    conectaBaseDatos.execute('''
+
+
+''')
+    pass
+
 boton_registrar = tk.Button(ventana, text="Registrar", command=input_b,)
 boton_registrar.grid(row=3, column=3, padx=10, pady=10)
 
@@ -140,6 +169,9 @@ b_consulta.grid(column=0, row= 3, padx= 10, pady=10)
 
 c_consulta = tk.Button (ventana, text= "Consultar Clientes", command= consulta_c)
 c_consulta.grid(column=0, row=9, padx=10, pady=10)
+
+boton_c = tk.Button (ventana, text= "Aceptar", command = actualizar_c)
+boton_c.grid (column= 1, row= 12, padx= 10, pady=10)
 
 # Cerrar la base de datos al salir de la ventana
 ventana.protocol("WM_DELETE_WINDOW", lambda: (cerrar_d(), ventana.destroy()))
