@@ -145,16 +145,13 @@ def actualizar_c():
             SET total = ?
             WHERE nombre = ? ;
                 ''', (dato10.get(), dato11.get()))
+    conectaBaseDatos.commit()
     
     # nombre = cur.execute('SELECT nombre, apellido FROM clientes').fetchall()
-    messagebox.showinfo("Actilizacion", f"Cuenta de actializada")
-    conectaBaseDatos.commit()
+    messagebox.showinfo("Actilizacion", "Cuenta de actializada")
+   
 
 def borrar_c():
-    conectaBaseDatos.execute('''
-
-
-''')
     pass
 
 boton_registrar = tk.Button(ventana, text="Registrar", command=input_b,)
