@@ -461,7 +461,6 @@ def search(page: ft.Page):
         else:
             print("intenta de nuevo")
                 
-
 # Initialize Database
 create_table()
 
