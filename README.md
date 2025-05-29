@@ -1,7 +1,7 @@
 ## Dagent
 ![Status](https://img.shields.io/badge/status-in--development-yellow) ![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg) 
 
-**Projec-db** es un **script en Python** que facilita la gestión de **clientes y ventas** en una base de datos. Este script te permite ingresar y almacenar información de clientes y ventas de manera rápida y sencilla.
+**Dagent** es un **script en Python** que facilita la gestión de **clientes y ventas** en una base de datos. Este script te permite ingresar y almacenar información de clientes y ventas de manera rápida y sencilla.
 
 ![GitHub Repo stars](https://img.shields.io/github/stars/wh1te-fox/Projec-db?style=social)
 
