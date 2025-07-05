@@ -83,11 +83,21 @@ def main(page: ft.Page):
     page.add(
         ft.Row(
             [
-                ft.Container(rail, width=90),
+                
+                ft.Container(rail, width=100),
                 ft.VerticalDivider(width=1),
                 ft.Column(
                     [
                         ft.Text("estadisticas de la tienda"),
+
+                                ft.Image(
+
+                                    src = f"main/Testing/other/freepik__an-elegant-logo-for-revenue-management-with-a-focu__86848.png",
+
+                        #src=f"/icons/icon-512.png",
+                width=100,
+                height=100,
+                fit=ft.ImageFit.CONTAIN),
                         # ft.Row([], spacing=10),
                     ],
                     alignment=ft.MainAxisAlignment.START,
@@ -98,6 +108,8 @@ def main(page: ft.Page):
             expand=True,
         )
     )
+
+
 
 def cambiar_vista(e, page):
 
@@ -128,5 +140,4 @@ def cambiar_vista(e, page):
     elif index == 5: # funcional
         welcome(page)
 
-
-
+# ft.app(target=main)

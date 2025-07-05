@@ -1,7 +1,10 @@
 import flet as ft
 
 def actualizar(page: ft.Page):
+
+    from Testing.controlador.menu import main
     page.controls.clear()
+
     
     page.title = "actualizar cliente"
 

@@ -1,7 +1,18 @@
-## Dagent
+# Dagent
+
+<p align="center">
+  <img 
+  width="500" height="500"
+  src="main/Testing/other/freepik__an-elegant-logo-for-revenue-management-with-a-focu__86848.png" 
+  alt="logo" />
+</p>
+
+
+
+
 ![Status](https://img.shields.io/badge/status-in--development-yellow) ![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg) 
 
-**Projec-db** es un **script en Python** que facilita la gestión de **clientes y ventas** en una base de datos. Este script te permite ingresar y almacenar información de clientes y ventas de manera rápida y sencilla.
+**Dagent** es un **script en Python** que facilita la gestión de **clientes y ventas** en una base de datos. Este script te permite ingresar y almacenar información de clientes y ventas de manera rápida y sencilla.
 
 ![GitHub Repo stars](https://img.shields.io/github/stars/wh1te-fox/Projec-db?style=social)
 
@@ -52,3 +63,206 @@ pip install flet[all]
 ### Licencia
 
 Este proyecto está bajo la Licencia GPL-3.0 - ver el archivo [LICENSE](https://github.com/wh1te-fox/Projec-db?tab=GPL-3.0-1-ov-file) para más detalles.
+
+```
+app
+├─ LICENSE
+├─ README.md
+└─ main
+   ├─ SQlite
+   │  ├─ Iniciador.py
+   │  └─ iniciador2.py
+   ├─ Testing
+   │  ├─ controlador
+   │  │  ├─ busqueda_c.py
+   │  │  ├─ entrada.py
+   │  │  ├─ menu.py
+   │  │  ├─ update_client.py
+   │  │  └─ validacion.py
+   │  ├─ modelo
+   │  │  ├─ busqueda.py
+   │  │  ├─ busqueda2.py
+   │  │  ├─ consulta.py
+   │  │  ├─ modelo.py
+   │  │  ├─ modelo2.py
+   │  │  ├─ setting.py
+   │  │  ├─ testing
+   │  │  └─ testing.db
+   │  ├─ other
+   │  │  ├─ SQlite
+   │  │  │  ├─ Iniciador.py
+   │  │  │  └─ SQlite
+   │  │  │     └─ Iniciador.py
+   │  │  ├─ freepik__an-elegant-logo-for-revenue-management-with-a-focu__86848.png
+   │  │  ├─ login.py
+   │  │  ├─ poo.py
+   │  │  ├─ poo2.py
+   │  │  ├─ poo3.py
+   │  │  └─ poo4.py
+   │  └─ vista
+   │     ├─ cliente.py
+   │     ├─ page.py
+   │     └─ welcome.py
+   └─ page.py
+
+```
+```
+app
+├─ LICENSE
+├─ README.md
+└─ main
+   ├─ SQlite
+   │  ├─ Iniciador (2).py
+   │  ├─ Iniciador (3).py
+   │  ├─ Iniciador.py
+   │  └─ iniciador2.py
+   ├─ Testing
+   │  ├─ controlador
+   │  │  ├─ busqueda_c.py
+   │  │  ├─ entrada.py
+   │  │  ├─ menu.py
+   │  │  ├─ update_client.py
+   │  │  └─ validacion.py
+   │  ├─ modelo
+   │  │  ├─ busqueda.py
+   │  │  ├─ busqueda2.py
+   │  │  ├─ consulta.py
+   │  │  ├─ modelo.py
+   │  │  ├─ modelo2.py
+   │  │  ├─ setting.py
+   │  │  ├─ testing
+   │  │  └─ testing.db
+   │  ├─ other
+   │  │  ├─ freepik__an-elegant-logo-for-revenue-management-with-a-focu__86848.png
+   │  │  ├─ login.py
+   │  │  ├─ poo.py
+   │  │  ├─ poo2.py
+   │  │  ├─ poo3.py
+   │  │  └─ poo4.py
+   │  └─ vista
+   │     ├─ cliente.py
+   │     ├─ page.py
+   │     └─ welcome.py
+   └─ page.py
+
+```
+```
+app
+├─ LICENSE
+├─ README.md
+└─ main
+   ├─ SQlite
+   │  ├─ Iniciador (2).py
+   │  ├─ Iniciador (3).py
+   │  ├─ Iniciador.py
+   │  └─ iniciador2.py
+   ├─ Testing
+   │  ├─ controlador
+   │  │  ├─ busqueda_c.py
+   │  │  ├─ entrada.py
+   │  │  ├─ menu.py
+   │  │  ├─ update_client.py
+   │  │  └─ validacion.py
+   │  ├─ modelo
+   │  │  ├─ busqueda.py
+   │  │  ├─ busqueda2.py
+   │  │  ├─ consulta.py
+   │  │  ├─ modelo.py
+   │  │  ├─ modelo2.py
+   │  │  ├─ setting.py
+   │  │  ├─ testing
+   │  │  └─ testing.db
+   │  ├─ other
+   │  │  ├─ freepik__an-elegant-logo-for-revenue-management-with-a-focu__86848.png
+   │  │  ├─ login.py
+   │  │  ├─ poo.py
+   │  │  ├─ poo2.py
+   │  │  ├─ poo3.py
+   │  │  └─ poo4.py
+   │  └─ vista
+   │     ├─ cliente.py
+   │     ├─ page.py
+   │     └─ welcome.py
+   └─ page.py
+
+```
+```
+app
+├─ LICENSE
+├─ README.md
+└─ main
+   ├─ SQlite
+   │  ├─ Iniciador (2).py
+   │  ├─ Iniciador (3).py
+   │  ├─ Iniciador.py
+   │  └─ iniciador2.py
+   ├─ Testing
+   │  ├─ controlador
+   │  │  ├─ busqueda_c.py
+   │  │  ├─ entrada.py
+   │  │  ├─ menu.py
+   │  │  ├─ update_client.py
+   │  │  └─ validacion.py
+   │  ├─ modelo
+   │  │  ├─ busqueda.py
+   │  │  ├─ busqueda2.py
+   │  │  ├─ consulta.py
+   │  │  ├─ modelo.py
+   │  │  ├─ modelo2.py
+   │  │  ├─ setting.py
+   │  │  ├─ testing
+   │  │  └─ testing.db
+   │  ├─ other
+   │  │  ├─ freepik__an-elegant-logo-for-revenue-management-with-a-focu__86848.png
+   │  │  ├─ login.py
+   │  │  ├─ poo.py
+   │  │  ├─ poo2.py
+   │  │  ├─ poo3.py
+   │  │  └─ poo4.py
+   │  └─ vista
+   │     ├─ cliente.py
+   │     ├─ page.py
+   │     └─ welcome.py
+   └─ page.py
+
+```
+```
+app
+├─ LICENSE
+├─ README.md
+└─ main
+   ├─ SQlite
+   │  ├─ Iniciador (2).py
+   │  ├─ Iniciador (3).py
+   │  ├─ Iniciador.py
+   │  └─ iniciador2.py
+   ├─ Testing
+   │  ├─ controlador
+   │  │  ├─ busqueda_c.py
+   │  │  ├─ entrada.py
+   │  │  ├─ menu.py
+   │  │  ├─ update_client.py
+   │  │  └─ validacion.py
+   │  ├─ modelo
+   │  │  ├─ busqueda.py
+   │  │  ├─ busqueda2.py
+   │  │  ├─ consulta.py
+   │  │  ├─ modelo.py
+   │  │  ├─ modelo2.py
+   │  │  ├─ setting.py
+   │  │  ├─ testing
+   │  │  └─ testing.db
+   │  ├─ other
+   │  │  ├─ freepik__an-elegant-logo-for-revenue-management-with-a-focu__86848.png
+   │  │  ├─ login.py
+   │  │  ├─ poo.py
+   │  │  ├─ poo2.py
+   │  │  ├─ poo3.py
+   │  │  └─ poo4.py
+   │  └─ vista
+   │     ├─ cliente.py
+   │     ├─ page.py
+   │     └─ welcome.py
+   └─ page.py
+
+```
