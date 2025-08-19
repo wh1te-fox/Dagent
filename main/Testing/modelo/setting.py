@@ -1,8 +1,12 @@
 import flet as ft
 
+from Testing.controlador.menu import dash_board
+    
+
 # Settings Page
 def sett(page: ft.Page):
     page.controls.clear()
+    page.add(ft.Text("Configuraciones", width=300, height=60))
     page.title = "Settings"
 
 
@@ -13,9 +17,6 @@ def sett(page: ft.Page):
             else ft.ThemeMode.LIGHT
         )
         page.update()    
-    # def app():
-    
-    from Testing.controlador.menu import main
 
     page.theme_mode = ft.ThemeMode.LIGHT
 
@@ -32,9 +33,6 @@ def sett(page: ft.Page):
     )'''
 
 
-    
-    btn = ft.ElevatedButton(text="Exit", on_click=lambda _: main(page))
+    btn = ft.ElevatedButton(text="Exit", on_click=lambda _: dash_board(page))
     page.add(theme_swith, btn)
     page.update()
-
-#ft.app(target=sett)

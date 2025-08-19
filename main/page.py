@@ -1,8 +1,13 @@
 import flet as ft 
 
-from Testing.controlador.menu import main
-from Testing.other.SQlite.SQlite.Iniciador import inicializar_base_datos
+# Ventana normal
+def controll(page: ft.Page):
+    page.add (ft.Text ("depuracion lista"))
 
-inicializar_base_datos() # repara toda la base de datos
+    from Testing.controlador.menu import dash_board
 
-ft.app(target=main)
+    page.controls.append(ft.ElevatedButton("Cambiar vista", on_click=lambda e: dash_board(page)))
+    page.update()
+    
+if __name__ == "__main__": # solo ejecutara si estas en page.py
+    ft.app(target=controll)

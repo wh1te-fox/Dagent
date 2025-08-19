@@ -1,7 +1,7 @@
 import flet as ft
 import sqlite3
 
-from Testing.controlador.update_client import actualizar
+#from Testing.controlador.update_client import actualizar
 
 def search_c(entry_name, entry_nick):
 
@@ -43,10 +43,6 @@ def search_c(entry_name, entry_nick):
                 ft.Column([b])
             ], alignment= ft.MainAxisAlignment.CENTER, spacing= 100
         )
-
-
-
-
-        
+  
     else:
         print("intenta de nuevo")

@@ -2,7 +2,7 @@ import flet as ft
 
 def actualizar(page: ft.Page):
 
-    from Testing.controlador.menu import main
+    from menu import main
     page.controls.clear()
 
     
@@ -19,3 +19,4 @@ def actualizar(page: ft.Page):
     page.add( ft.Text ("contelido aqui"))
 
     page.update()
+
