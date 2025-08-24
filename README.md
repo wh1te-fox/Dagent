@@ -26,14 +26,6 @@
 
 ---
 
-### Clonar repositorio
-
-```
-git clone https://github.com/wh1te-fox/Projec-db.git
-```
-
----
-
 ### Tecnologías Usadas
 
 Este scrip utiliza las siguientes tecnologías:
@@ -47,7 +39,7 @@ Este scrip utiliza las siguientes tecnologías:
 ### Clona este repositorio
 
 ```bash
-git clone https://github.com/wh1te-fox/Projec-db.git
+git@github.com:wh1te-fox/Dagent.git
 ````
 
 ---
