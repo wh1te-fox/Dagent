@@ -3,7 +3,7 @@
 <p align="center">
   <img 
   width="500" height="500"
-  src="main/Testing/other/freepik__an-elegant-logo-for-revenue-management-with-a-focu__86848.png" 
+  src="main/Code/other/logo.png" 
   alt="logo" />
 </p>
 
@@ -60,209 +60,41 @@ pip install flet[all]
 
 ---
 
+### Estructura del Proyecto
+
+```
+app
+├─ LICENSE
+├─ README.md
+└─ main
+   ├─ Code
+   │  ├─ controlador
+   │  │  ├─ busqueda_c.py
+   │  │  ├─ entrada.py
+   │  │  ├─ menu.py
+   │  │  ├─ update_client.py
+   │  │  └─ validacion.py
+   │  ├─ modelo
+   │  │  ├─ busqueda.py
+   │  │  ├─ consulta.py
+   │  │  ├─ modelo.py
+   │  │  ├─ modelo2.py
+   │  │  └─ setting.py
+   │  └─ other
+   │     ├─ Container.py
+   │     ├─ cliente.py
+   │     ├─ consulta general.py
+   │     ├─ data.py
+   │     ├─ imagenes.py
+   │     ├─ logo.png
+   │     └─ welcome.py
+   ├─ SQL
+   └─ page.py
+
+```
+
+---
+
 ### Licencia
 
 Este proyecto está bajo la Licencia GPL-3.0 - ver el archivo [LICENSE](https://github.com/wh1te-fox/Projec-db?tab=GPL-3.0-1-ov-file) para más detalles.
-
-```
-app
-├─ LICENSE
-├─ README.md
-└─ main
-   ├─ SQlite
-   │  ├─ Iniciador.py
-   │  └─ iniciador2.py
-   ├─ Testing
-   │  ├─ controlador
-   │  │  ├─ busqueda_c.py
-   │  │  ├─ entrada.py
-   │  │  ├─ menu.py
-   │  │  ├─ update_client.py
-   │  │  └─ validacion.py
-   │  ├─ modelo
-   │  │  ├─ busqueda.py
-   │  │  ├─ busqueda2.py
-   │  │  ├─ consulta.py
-   │  │  ├─ modelo.py
-   │  │  ├─ modelo2.py
-   │  │  ├─ setting.py
-   │  │  ├─ testing
-   │  │  └─ testing.db
-   │  ├─ other
-   │  │  ├─ SQlite
-   │  │  │  ├─ Iniciador.py
-   │  │  │  └─ SQlite
-   │  │  │     └─ Iniciador.py
-   │  │  ├─ freepik__an-elegant-logo-for-revenue-management-with-a-focu__86848.png
-   │  │  ├─ login.py
-   │  │  ├─ poo.py
-   │  │  ├─ poo2.py
-   │  │  ├─ poo3.py
-   │  │  └─ poo4.py
-   │  └─ vista
-   │     ├─ cliente.py
-   │     ├─ page.py
-   │     └─ welcome.py
-   └─ page.py
-
-```
-```
-app
-├─ LICENSE
-├─ README.md
-└─ main
-   ├─ SQlite
-   │  ├─ Iniciador (2).py
-   │  ├─ Iniciador (3).py
-   │  ├─ Iniciador.py
-   │  └─ iniciador2.py
-   ├─ Testing
-   │  ├─ controlador
-   │  │  ├─ busqueda_c.py
-   │  │  ├─ entrada.py
-   │  │  ├─ menu.py
-   │  │  ├─ update_client.py
-   │  │  └─ validacion.py
-   │  ├─ modelo
-   │  │  ├─ busqueda.py
-   │  │  ├─ busqueda2.py
-   │  │  ├─ consulta.py
-   │  │  ├─ modelo.py
-   │  │  ├─ modelo2.py
-   │  │  ├─ setting.py
-   │  │  ├─ testing
-   │  │  └─ testing.db
-   │  ├─ other
-   │  │  ├─ freepik__an-elegant-logo-for-revenue-management-with-a-focu__86848.png
-   │  │  ├─ login.py
-   │  │  ├─ poo.py
-   │  │  ├─ poo2.py
-   │  │  ├─ poo3.py
-   │  │  └─ poo4.py
-   │  └─ vista
-   │     ├─ cliente.py
-   │     ├─ page.py
-   │     └─ welcome.py
-   └─ page.py
-
-```
-```
-app
-├─ LICENSE
-├─ README.md
-└─ main
-   ├─ SQlite
-   │  ├─ Iniciador (2).py
-   │  ├─ Iniciador (3).py
-   │  ├─ Iniciador.py
-   │  └─ iniciador2.py
-   ├─ Testing
-   │  ├─ controlador
-   │  │  ├─ busqueda_c.py
-   │  │  ├─ entrada.py
-   │  │  ├─ menu.py
-   │  │  ├─ update_client.py
-   │  │  └─ validacion.py
-   │  ├─ modelo
-   │  │  ├─ busqueda.py
-   │  │  ├─ busqueda2.py
-   │  │  ├─ consulta.py
-   │  │  ├─ modelo.py
-   │  │  ├─ modelo2.py
-   │  │  ├─ setting.py
-   │  │  ├─ testing
-   │  │  └─ testing.db
-   │  ├─ other
-   │  │  ├─ freepik__an-elegant-logo-for-revenue-management-with-a-focu__86848.png
-   │  │  ├─ login.py
-   │  │  ├─ poo.py
-   │  │  ├─ poo2.py
-   │  │  ├─ poo3.py
-   │  │  └─ poo4.py
-   │  └─ vista
-   │     ├─ cliente.py
-   │     ├─ page.py
-   │     └─ welcome.py
-   └─ page.py
-
-```
-```
-app
-├─ LICENSE
-├─ README.md
-└─ main
-   ├─ SQlite
-   │  ├─ Iniciador (2).py
-   │  ├─ Iniciador (3).py
-   │  ├─ Iniciador.py
-   │  └─ iniciador2.py
-   ├─ Testing
-   │  ├─ controlador
-   │  │  ├─ busqueda_c.py
-   │  │  ├─ entrada.py
-   │  │  ├─ menu.py
-   │  │  ├─ update_client.py
-   │  │  └─ validacion.py
-   │  ├─ modelo
-   │  │  ├─ busqueda.py
-   │  │  ├─ busqueda2.py
-   │  │  ├─ consulta.py
-   │  │  ├─ modelo.py
-   │  │  ├─ modelo2.py
-   │  │  ├─ setting.py
-   │  │  ├─ testing
-   │  │  └─ testing.db
-   │  ├─ other
-   │  │  ├─ freepik__an-elegant-logo-for-revenue-management-with-a-focu__86848.png
-   │  │  ├─ login.py
-   │  │  ├─ poo.py
-   │  │  ├─ poo2.py
-   │  │  ├─ poo3.py
-   │  │  └─ poo4.py
-   │  └─ vista
-   │     ├─ cliente.py
-   │     ├─ page.py
-   │     └─ welcome.py
-   └─ page.py
-
-```
-```
-app
-├─ LICENSE
-├─ README.md
-└─ main
-   ├─ SQlite
-   │  ├─ Iniciador (2).py
-   │  ├─ Iniciador (3).py
-   │  ├─ Iniciador.py
-   │  └─ iniciador2.py
-   ├─ Testing
-   │  ├─ controlador
-   │  │  ├─ busqueda_c.py
-   │  │  ├─ entrada.py
-   │  │  ├─ menu.py
-   │  │  ├─ update_client.py
-   │  │  └─ validacion.py
-   │  ├─ modelo
-   │  │  ├─ busqueda.py
-   │  │  ├─ busqueda2.py
-   │  │  ├─ consulta.py
-   │  │  ├─ modelo.py
-   │  │  ├─ modelo2.py
-   │  │  ├─ setting.py
-   │  │  ├─ testing
-   │  │  └─ testing.db
-   │  ├─ other
-   │  │  ├─ freepik__an-elegant-logo-for-revenue-management-with-a-focu__86848.png
-   │  │  ├─ login.py
-   │  │  ├─ poo.py
-   │  │  ├─ poo2.py
-   │  │  ├─ poo3.py
-   │  │  └─ poo4.py
-   │  └─ vista
-   │     ├─ cliente.py
-   │     ├─ page.py
-   │     └─ welcome.py
-   └─ page.py
-
-```

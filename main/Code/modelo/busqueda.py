@@ -5,8 +5,6 @@ from flet import SnackBar
 # lista de clientes
 def search(page: ft.Page):
 
-    #from controlador.busqueda_c import search_c
-    #from Testing.controlador.menu import main
     page.update()
     page.controls.clear()
 

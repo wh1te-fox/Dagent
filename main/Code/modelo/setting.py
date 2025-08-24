@@ -1,13 +1,17 @@
 import flet as ft
 
-from Testing.controlador.menu import dash_board
+from Code.controlador.menu import dash_board
     
 
 # Settings Page
 def sett(page: ft.Page):
+
     page.controls.clear()
     page.add(ft.Text("Configuraciones", width=300, height=60))
     page.title = "Settings"
+
+    page.vertical_alignment = ft.MainAxisAlignment.CENTER
+    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
 
 
     def theme_changed(e):
@@ -25,13 +29,6 @@ def sett(page: ft.Page):
         label_position=ft.LabelPosition.LEFT, 
         on_change=theme_changed
         )
-    '''c2 = ft.Switch(
-        label= "sistema de credito\n" \
-        "puedes activar o descativar para tener un sistem de creditos"
-        label_position= ft.LabelPosition=LEFT,
-        on_change=
-    )'''
-
 
     btn = ft.ElevatedButton(text="Exit", on_click=lambda _: dash_board(page))
     page.add(theme_swith, btn)

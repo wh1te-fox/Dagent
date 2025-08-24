@@ -16,7 +16,7 @@ def actualizar(page: ft.Page):
                 # data
             
     page.add(product, num, but, ex)
-    page.add( ft.Text ("contelido aqui"))
+    page.add( ft.Text ("contenido"))
 
     page.update()
 

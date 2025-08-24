@@ -4,7 +4,7 @@ import sqlite3
 
 # Product Entry Page
 def entry_product(page: ft.Page):
-    from Testing.controlador.menu import dash_board
+    from Code.controlador.menu import dash_board
 
     page.controls.clear()
     page.title = "Register Product"

@@ -51,27 +51,23 @@ def dash_board(page: ft.Page): # ventana principal
 
     page.add(rail)
 
-    #   def on_click(e):
-     #   sett(page)
-
-      #  page.controls.append(ft.ElevatedButton("Ir a config", on_click=on_click))
-       # page.update()
-
     def cambiar_vista(e, page):
 
-        from Testing.controlador.entrada import entry_product
-        from Testing.modelo.setting import sett
-        from Testing.modelo.busqueda import search
+        #from Code.controlador.entrada import entry_product
+        from Code.controlador.entrada import entry_product
+        from Code.modelo.setting import sett
+        from Code.modelo.busqueda import search
+        from Code.other.cliente import client
 
         index = e.control.selected_index
         if index == 0:
             dash_board(page)       # lógica para mostrar Inicio
  
-        elif index == 1:
+        elif index == 1:  # funciones pendientes
             entry_product(page)
 
         elif index == 2:
-            deputacion(page)
+            client(page)
 
         elif index == 3: # funciones pendientes
             print("bucar clente")
