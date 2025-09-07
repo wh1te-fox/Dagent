@@ -2,6 +2,9 @@ import flet as ft
 
 # Ventana normal
 def controll(page: ft.Page):
+    page.vertical_alignment = ft.MainAxisAlignment.CENTER
+    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+
     page.add (ft.Text ("depuracion lista"))
 
     from Code.controlador.menu import dash_board

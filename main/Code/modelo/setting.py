@@ -7,7 +7,6 @@ from Code.controlador.menu import dash_board
 def sett(page: ft.Page):
 
     page.controls.clear()
-    page.add(ft.Text("Configuraciones", width=300, height=60))
     page.title = "Settings"
 
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
@@ -31,5 +30,7 @@ def sett(page: ft.Page):
         )
 
     btn = ft.ElevatedButton(text="Exit", on_click=lambda _: dash_board(page))
-    page.add(theme_swith, btn)
+    page.add (ft.Text("Configuraciones", 
+        size=30, weight=ft.FontWeight.W_900, 
+        selectable=True), theme_swith, btn)
     page.update()

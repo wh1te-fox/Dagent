@@ -60,8 +60,8 @@ def dash_board(page: ft.Page): # ventana principal
         from Code.other.cliente import client
 
         index = e.control.selected_index
-        if index == 0:
-            dash_board(page)       # lógica para mostrar Inicio
+        if index == 0:  # pagina principal
+            dash_board(page)  
  
         elif index == 1:  # funciones pendientes
             entry_product(page)
@@ -70,7 +70,6 @@ def dash_board(page: ft.Page): # ventana principal
             client(page)
 
         elif index == 3: # funciones pendientes
-            print("bucar clente")
             search(page)
 
         elif index == 4: # funcional

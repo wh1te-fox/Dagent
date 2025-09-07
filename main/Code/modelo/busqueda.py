@@ -5,12 +5,14 @@ from flet import SnackBar
 # lista de clientes
 def search(page: ft.Page):
 
+    from Code.controlador.menu import dash_board
+
     page.update()
     page.controls.clear()
-
-    entry_name = ft.TextField(label="name client", width = 150, border_radius=10)
-    entry_nick = ft.TextField(label="nickname client", width = 150, border_radius=10)
-
+    
+    name = ft.TextField(label="first name", width = 150, border_radius=10)
+    last = ft.TextField(label="last name", width = 150, border_radius=10)
+    exi = ft.ElevatedButton(text="Exit", on_click= lambda e: dash_board(page))
   
 
 
@@ -30,16 +32,24 @@ def search(page: ft.Page):
     )
     search_setting = ft.Row(
         controls=[
-            ft.Column([entry_name]),
-            ft.Column([entry_nick]),
+            ft.Column([name]),
+            ft.Column([last]),
             ft.Column([search_e])
 
             ],
             spacing= 50,
             alignment=ft.MainAxisAlignment.CENTER
         )
+    buttons = ft.Row (
+        controls= [
+            ft.Column([exi])
+        ], alignment= ft.MainAxisAlignment.CENTER
+    )
     
-    page.add (ft.Text("Clientes", size=30, weight=ft.FontWeight.W_900, selectable=True), search_setting)
+    page.add (ft.Text("Clientes", 
+        size=30, weight=ft.FontWeight.W_900, 
+        selectable=True), 
+        search_setting, buttons)
 
     #page.add(*product_list)
              
@@ -52,3 +62,5 @@ def search(page: ft.Page):
     
     
     page.update()
+
+print("busqueda.py")

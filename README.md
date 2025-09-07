@@ -54,33 +54,22 @@ pip install flet[all]
 
 ### Estructura del Proyecto
 
+
 ```
 app
 ├─ LICENSE
 ├─ README.md
 └─ main
    ├─ Code
-   │  ├─ controlador
+   │  ├─ SQL
    │  │  ├─ busqueda_c.py
+   │  │  └─ productos.py
+   │  ├─ controlador
    │  │  ├─ entrada.py
    │  │  ├─ menu.py
-   │  │  ├─ update_client.py
-   │  │  └─ validacion.py
-   │  ├─ modelo
-   │  │  ├─ busqueda.py
-   │  │  ├─ consulta.py
-   │  │  ├─ modelo.py
-   │  │  ├─ modelo2.py
-   │  │  └─ setting.py
-   │  └─ other
-   │     ├─ Container.py
-   │     ├─ cliente.py
-   │     ├─ consulta general.py
-   │     ├─ data.py
-   │     ├─ imagenes.py
-   │     ├─ logo.png
-   │     └─ welcome.py
-   ├─ SQL
+   │  │  └─ update_client.py
+   │  └─ modelo
+   │     └─ setting.py
    └─ page.py
 
 ```

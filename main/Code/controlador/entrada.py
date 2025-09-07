@@ -4,51 +4,43 @@ import sqlite3
 
 # Product Entry Page
 def entry_product(page: ft.Page):
+    page.controls.clear()
     from Code.controlador.menu import dash_board
 
+
+    # en la pagina, de forma vertical
+    page.vertical_alignment= ft.MainAxisAlignment.CENTER # alinearlo en el centro
+    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+    
     page.controls.clear()
     page.title = "Register Product"
 
-    product_name = ft.TextField(label="Product Name", width=300, border_radius=10)
-    product_price = ft.TextField(label="Price", width=300, border_radius=10)
+    name = ft.TextField(label="Product Name", width=300, border_radius=10)
+    product = ft.TextField(label="Price", width=300, border_radius=10)
 
-    save_button = ft.ElevatedButton(text="Save", on_click=lambda _: save_product())
-    exit_button = ft.ElevatedButton(text="Exit", on_click=lambda _: dash_board(page))
+    save = ft.ElevatedButton(text="Save", on_click=lambda _: save_product())
+    exi = ft.ElevatedButton(text="Exit", on_click=lambda _: dash_board(page))
 
-    page.add(product_name, product_price, save_button, exit_button)
+    entries = ft.Row (
+        controls= [
+            ft.Column ([name]),
+            ft.Column([product])
+        ], alignment=ft.MainAxisAlignment.CENTER # en las entradas, se posicionan en el centro
+    )
+
+    buttons = ft.Row (
+        controls= [
+            ft.Column ([save]),
+            ft.Column ([exi])
+        ],  alignment=ft.MainAxisAlignment.CENTER,
+    )
+    page.add( ft.Text("Agrega producto", size=30, 
+        weight=ft.FontWeight.W_900),
+        entries, buttons)
     page.update()
 
-    def save_product():
-        var = product_name.value
-        num = float(product_price.value)
+    def data():
+        print("esperando funcion....")
+    
 
-        conn = sqlite3.connect("information.db")
-        cur = conn.cursor()
-        cur.execute("INSERT INTO sale (Producto, precio) VALUES (?,?)",
-        (product_name.value, int(product_price.value)))
-        conn.commit()
-        conn.close()
-
-        print("good")
-        page.add(ft.Text("se guardo correctamente"))
-        page.update()
-
-        
-        try:
-            if var and num > 0:
-
-                conn = sqlite3.connect("information.db")
-                cur = conn.cursor()
-                cur.execute("INSERT INTO sale (product, valor) VALUES (?,?)",
-                (var, float(num)))
-                conn.commit()
-                conn.close()
-                print("good")
-                page.add(ft.Text("se guardo correctamente"))
-                page.update()
-
-        except:
-            print("confirme la entradas")
-            page.add (ft.Text("Verifique si las entradas son corectas"))
-            page.update()
-
+print("entrada.py")
