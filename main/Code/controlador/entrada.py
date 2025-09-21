@@ -6,6 +6,7 @@ import sqlite3
 def entry_product(page: ft.Page):
     page.controls.clear()
     from Code.controlador.menu import dash_board
+    from Code.SQL.insertar import data
 
 
     # en la pagina, de forma vertical
@@ -18,7 +19,7 @@ def entry_product(page: ft.Page):
     name = ft.TextField(label="Product Name", width=300, border_radius=10)
     product = ft.TextField(label="Price", width=300, border_radius=10)
 
-    save = ft.ElevatedButton(text="Save", on_click=lambda _: save_product())
+    save = ft.ElevatedButton(text="Save", on_click=lambda _: data())
     exi = ft.ElevatedButton(text="Exit", on_click=lambda _: dash_board(page))
 
     entries = ft.Row (

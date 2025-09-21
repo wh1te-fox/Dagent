@@ -4,6 +4,7 @@ def dash_board(page: ft.Page): # ventana principal
     page.controls.clear()
     page.title = "Dagent"
     page.update()
+    page.vertical_alignment = ft.MainAxisAlignment.START
 
     rail = ft.NavigationRail(
         selected_index=0,
