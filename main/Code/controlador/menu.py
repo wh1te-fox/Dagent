@@ -1,10 +1,24 @@
 import flet as ft
 
+# Trabajo con modulos. Agregar y quitar. 
+
 def dash_board(page: ft.Page): # ventana principal
     page.controls.clear()
     page.title = "Dagent"
     page.update()
     page.vertical_alignment = ft.MainAxisAlignment.START
+
+    page.add(
+        ft.Container(
+            content= ft.Row (
+                controls= [
+                    ft.Column([ft.Text('hey')]),
+                    ft.Column([ft.Text ('usuario')])
+                ]
+            )
+        )
+    )    
+
 
     rail = ft.NavigationRail(
         selected_index=0,

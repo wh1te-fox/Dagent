@@ -6,7 +6,7 @@ import sqlite3
 def entry_product(page: ft.Page):
     page.controls.clear()
     from Code.controlador.menu import dash_board
-    from Code.SQL.insertar import data
+    #from Code.SQL.insertar import data
 
 
     # en la pagina, de forma vertical
