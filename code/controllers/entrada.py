@@ -5,7 +5,49 @@ import sqlite3
 # Product Entry Page
 def entry_product(page: ft.Page):
     page.controls.clear()
-    from Code.controlador.menu import dash_board
+    from menu import dash_board
+    from classFt.modelButton import Control_b
+    from classFt.model_alignment import view_column
+
+    save_button = Control_b("Guardar", data, page)
+    exit_button = Control_b("Sailr", dash_board, page)
+
+
+    # revisar 
+    name = ft.TextField(label="Product Name", width=300, border_radius=10)
+    product = ft.TextField(label=f"{e}", width=300, border_radius=10)
+
+
+    tickets = view_column()
+    buttons = view_column(save_button, exit_button)
+    
+    page.add(tickets, buttons)
+      #entradas
+
+
+
+
+
+
+    '''
+        page.add(
+        save_button.view(),
+        exit_button.view()
+        )
+
+    '''
+
+
+
+
+
+
+
+
+
+
+
+
     #from Code.SQL.insertar import data
 
 
@@ -16,11 +58,11 @@ def entry_product(page: ft.Page):
     page.controls.clear()
     page.title = "Register Product"
 
-    name = ft.TextField(label="Product Name", width=300, border_radius=10)
-    product = ft.TextField(label="Price", width=300, border_radius=10)
+    e = "precio"
 
-    save = ft.ElevatedButton(text="Save", on_click=lambda _: data())
-    exi = ft.ElevatedButton(text="Exit", on_click=lambda _: dash_board(page))
+ 
+
+
 
     entries = ft.Row (
         controls= [
@@ -29,12 +71,7 @@ def entry_product(page: ft.Page):
         ], alignment=ft.MainAxisAlignment.CENTER # en las entradas, se posicionan en el centro
     )
 
-    buttons = ft.Row (
-        controls= [
-            ft.Column ([save]),
-            ft.Column ([exi])
-        ],  alignment=ft.MainAxisAlignment.CENTER,
-    )
+
     page.add( ft.Text("Agrega producto", size=30, 
         weight=ft.FontWeight.W_900),
         entries, buttons)
@@ -42,6 +79,6 @@ def entry_product(page: ft.Page):
 
     def data():
         print("esperando funcion....")
-    
+ft.app(target=entry_product)
 
 print("entrada.py")

@@ -7,9 +7,11 @@ def controll(page: ft.Page):
 
     page.add (ft.Text ("depuracion lista"))
 
-    from Code.controlador.menu import dash_board
+    from views.menu import dash_board
+    from views.components.modelButton import Control_b
 
-    page.controls.append(ft.ElevatedButton("Cambiar vista", on_click=lambda e: dash_board(page)))
+    use_class = Control_b("Cambiar vista", dash_board, page)
+    page.add(use_class.view())
     page.update()
     
 if __name__ == "__main__": # solo ejecutara si estas en page.py

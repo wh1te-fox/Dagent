@@ -71,7 +71,7 @@ def dash_board(page: ft.Page): # ventana principal
         #from Code.controlador.entrada import entry_product
         from Code.controlador.entrada import entry_product
         from Code.modelo.setting import sett
-        from Code.modelo.busqueda import search
+        from code.views.busqueda import search
         from Code.other.cliente import client
 
         index = e.control.selected_index
