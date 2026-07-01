@@ -14,6 +14,9 @@
 
 **Dagent** es un **script en Python** que facilita la gestión de **clientes y ventas** en una base de datos. Este script te permite ingresar y almacenar información de clientes y ventas de manera rápida y sencilla.
 
+> Este repositorio es un espacio dedicado a la exploración, experimentación y validación de nuevas tecnologías, herramientas e ideas. Si tienes una propuesta de implementación, una mejora o alguna tecnología que consideres de interés, no dudes en compartirla para su evaluación y posible incorporación.
+
+
 ![GitHub Repo stars](https://img.shields.io/github/stars/wh1te-fox/Projec-db?style=social)
 
 ---
@@ -39,15 +42,17 @@ Este scrip utiliza las siguientes tecnologías:
 ### Clona este repositorio
 
 ```bash
-git@github.com:wh1te-fox/Dagent.git
+git clone git@github.com:wh1te-fox/Dagent.git
 ````
 
 ---
 
 ### Dependencias
 
+Requiere Python 3.12
+
 ```bash
-pip install flet[all]
+pip install -r requirements.txt
 ```
 
 ---
