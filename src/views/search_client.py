@@ -36,7 +36,15 @@ def search(page: ft.Page):
     search_button = ButtonIcon(ft.Icons.SEARCH_OUTLINED, ft.Colors.GREEN_300, hi, "Buscar")
     add_search = search_button.model_icon()
 
-    page.add(execute_column)
-    page.add(add_search)
+    page.add(
+    ft.Row(
+        controls=[
+            execute_column,
+            add_search
+        ],
+        alignment=ft.MainAxisAlignment.CENTER,
+        spacing=20
+    )
+)
 
 print("search_client")
