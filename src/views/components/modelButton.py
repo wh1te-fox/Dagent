@@ -13,12 +13,15 @@ class Control_b:
         self.page = page
         
 
-    def view1(self, views): # mala practica, no necesita paramtros 
-        self.views = ft.ElevatedButton()
-        pass
+    #def view1(self, views): # mala practica, no necesita paramtros 
+    #   self.views = ft.ElevatedButton()
+    #    pass
 
     def view(self):
-        self.boton = ft.ElevatedButton(text=self.text_b, on_click=lambda e: self.parameter_b(self.page)) # usamos self para poder usar los paramtros 
+        self.boton = ft.ElevatedButton(
+            content=ft.Text(self.text_b),
+            on_click=lambda e: self.parameter_b(self.page) # usamos self para poder usar los paramtros 
+        )
         return self.boton # retornar el boton y que me permita hacer in .add
 
 class ButtonIcon:
