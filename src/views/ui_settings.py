@@ -29,7 +29,7 @@ def dark_mode(page: ft.Page):
         on_change=theme_changed
         )
 
-    btn = ft.ElevatedButton("Exit", on_click=lambda _: dash_board(page))
+    btn = ft.Button("Exit", on_click=lambda _: dash_board(page))
     page.add (ft.Text("Configuraciones", 
         size=30, weight=ft.FontWeight.W_900, 
         selectable=True), theme_swith, btn)
