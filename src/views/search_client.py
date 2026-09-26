@@ -20,15 +20,19 @@ def search(page: ft.Page):
     def hi():
         print('hola')
 
+    def exit_window(e):
+        dash_board(page)
+
+    btnCerrar = ft.Button(
+        "Cerrar",
+        on_click=exit_window
+    )
 
     parameter_name = InputModel('nombre')
     execute_entry = parameter_name.entry_style()
 
     last_name = InputModel('apellido')
     execute_entry1 = last_name.entry_style()
-
-    exit_button = Control_b("Salir", dash_board, page)
-    execute_button = exit_button.view()
   
     element_column = Column(execute_entry, execute_entry1)
     execute_column = element_column.view_column()
@@ -37,14 +41,15 @@ def search(page: ft.Page):
     add_search = search_button.model_icon()
 
     page.add(
-    ft.Row(
-        controls=[
-            execute_column,
-            add_search
-        ],
-        alignment=ft.MainAxisAlignment.CENTER,
-        spacing=20
+        ft.Row(
+            controls=[
+                execute_column,
+                add_search,
+                btnCerrar
+            ],
+            alignment=ft.MainAxisAlignment.CENTER,
+            spacing=20
+        )
     )
-)
 
 print("search_client")
