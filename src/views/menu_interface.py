@@ -6,6 +6,7 @@ def dash_board(page: ft.Page):
     from views.ui_settings import dark_mode
     from views.add_product import main
     from views.add_client import customer_page
+    from views.page_sale import input_sale
     
 
     page.title = "Dagent"
@@ -23,8 +24,9 @@ def dash_board(page: ft.Page):
             1:main,
             2:customer_page,
             3:search,
-            4:dark_mode
-        }
+            4:dark_mode,
+            5:input_sale
+        } # refactorizar el orden de seleccion
 
         func = execute_function.get(index)
         if func:

@@ -40,6 +40,11 @@ class NavigationBar:
                     ft.Icons.SETTINGS_OUTLINED,
                     ft.Icons.SETTINGS
                 ),
+                self.element_destination(
+                    "Ventas",
+                    ft.Icons.SHOPPING_CART_OUTLINED,
+                    ft.Icons.SHOPPING_CART_ROUNDED
+                ),
             ],
         )
 
