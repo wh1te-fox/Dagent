@@ -9,7 +9,6 @@ def main(page: ft.Page):
 
     from views.components.modelButton import Control_b
 
-    from develoment.main_page import main
     from views.menu_interface import dash_board
 
     use_class = Control_b("Cambiar vista", dash_board, page)

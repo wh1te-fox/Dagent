@@ -18,7 +18,7 @@ class Control_b:
     #    pass
 
     def view(self):
-        self.boton = ft.ElevatedButton(
+        self.boton = ft.Button(
             content=ft.Text(self.text_b),
             on_click=lambda e: self.parameter_b(self.page) # usamos self para poder usar los paramtros 
         )
