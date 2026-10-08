@@ -21,30 +21,36 @@ class NavigationBar:
                     ft.Icons.ACCOUNT_CIRCLE,
                 ),
                 self.element_destination(
-                    "Agregar producto",
+                    "Realizar Venta",
+                    ft.Icons.SHOPPING_CART_OUTLINED,
+                    ft.Icons.SHOPPING_CART_ROUNDED
+                ),
+                self.element_destination(
+                    "Registrar Producto",
                     ft.Icons.ADD_CIRCLE_OUTLINE,
                     ft.Icons.ADD_CIRCLE_OUTLINED
                 ),
                 self.element_destination(
-                    "Registrar producto",
+                    "Registrar Cliente",
                     ft.Icons.PERSON_ADD_ALT,
                     ft.Icons.PERSON_ADD_ALT_SHARP
                 ),
                 self.element_destination(
-                    "Buscar",
+                    "Buscar Clientes",
                     ft.Icons.PERSON_SEARCH_OUTLINED,
                     ft.Icons.PERSON_SEARCH_ROUNDED
+                ),
+                self.element_destination(
+                    "Reportes",
+                    ft.Icons.ASSESSMENT_OUTLINED,
+                    ft.Icons.ASSESSMENT
                 ),
                 self.element_destination(
                     "Configuración",
                     ft.Icons.SETTINGS_OUTLINED,
                     ft.Icons.SETTINGS
                 ),
-                self.element_destination(
-                    "Ventas",
-                    ft.Icons.SHOPPING_CART_OUTLINED,
-                    ft.Icons.SHOPPING_CART_ROUNDED
-                ),
+
             ],
         )
 
