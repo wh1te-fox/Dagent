@@ -1,8 +1,9 @@
 import flet as ft
-from src.services.database import obtener_producto_por_codigo
 
 
 def input_sale(page: ft.Page):
+    from services.database import obtener_producto_por_codigo, guardar_venta
+    
     page.controls.clear()
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
@@ -206,8 +207,8 @@ def input_sale(page: ft.Page):
         page.update()
 
     def exit_window(e):
-        from FrmPrincipal import list_button
-        list_button(page)
+        from views.menu_interface import dash_board
+        dash_board(page)
 
     inpCodigo = ft.TextField(
         label="Producto",
