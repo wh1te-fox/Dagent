@@ -4,31 +4,26 @@ def customer_page(page: ft.Page):
     # --- Importar clases asignadas ---
     from views.components.modelButton import Control_b
     from views.components.model_textfield import InputModel
-    from views.components.model_alignment import Column
     from views.menu_interface import dash_board
     from services.database import guardar_cliente, cliente_existe
     
-    
-    '''
-    # --- Importar servicio de clientes ---
-    from services.customer_service import init_db, add_customer
-    from views.menu_interface import dash_board
-    from views.add_product_client import add_product
-
-    # Inicializar la DB
-    init_db()
-    '''
     # --- Configuración de la página ---
     page.title = "Registrar Clientes"
-    page.padding = 20
+    page.padding = 30
     page.vertical_alignment = ft.MainAxisAlignment.START
+    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.controls.clear()
-
-    page.add(ft.Text("Registrar Clientes", size=30, weight=ft.FontWeight.W_900))
 
     # --- Entradas de cliente ---
     nombre_input = InputModel("Nombre").entry_style()
+    nombre_input.width = 350
+    nombre_input.border_radius = 10
+    nombre_input.prefix_icon = ft.Icons.PERSON
+
     apellido_input = InputModel("Apellido").entry_style()
+    apellido_input.width = 350
+    apellido_input.border_radius = 10
+    apellido_input.prefix_icon = ft.Icons.PERSON_OUTLINE
 
     # Mensaje general
     txtMensaje = ft.Text("", size=16)
@@ -82,13 +77,35 @@ def customer_page(page: ft.Page):
     guardar_btn = Control_b("Guardar", guardar_cliente_click, page).view()
     cancelar_btn = Control_b("Cancelar", cancelar, page).view()
 
-    # --- Organizar todo en columnas ---
-    ui_column = Column(
-        nombre_input,
-        apellido_input,
-        guardar_btn,
-        cancelar_btn,
+    header_row = ft.Row([
+        ft.Icon(ft.Icons.PERSON_ADD, size=32, color=ft.Colors.BLUE),
+        ft.Text("Registrar Clientes", size=30, weight=ft.FontWeight.W_900, selectable=True)
+    ], alignment=ft.MainAxisAlignment.CENTER, spacing=15)
+
+    form_card = ft.Card(
+        content=ft.Container(
+            content=ft.Column([
+                nombre_input,
+                apellido_input,
+                ft.Divider(),
+                txtMensaje
+            ], spacing=15, horizontal_alignment=ft.CrossAxisAlignment.CENTER),
+            padding=25,
+            width=450
+        )
     )
 
-    page.add(ui_column.view_column(), txtMensaje)
+    buttons_row = ft.Row(
+        controls=[guardar_btn, cancelar_btn],
+        alignment=ft.MainAxisAlignment.CENTER,
+        spacing=20
+    )
+
+    page.add(
+        header_row,
+        ft.Divider(height=20, color=ft.Colors.TRANSPARENT),
+        form_card,
+        ft.Divider(height=20, color=ft.Colors.TRANSPARENT),
+        buttons_row
+    )
     page.update()
