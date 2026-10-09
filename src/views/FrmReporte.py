@@ -115,9 +115,9 @@ def list_report(page: ft.Page):
     # Mostrar productos por defecto
     mostrar_productos()
 
-    btn_productos = ft.ElevatedButton("Ver Lista de Productos", on_click=mostrar_productos, icon=ft.Icons.INVENTORY, height=45)
-    btn_ventas = ft.ElevatedButton("Ver Lista de Ventas", on_click=mostrar_ventas, icon=ft.Icons.RECEIPT_LONG, height=45)
-    btnCerrar = ft.ElevatedButton("Cerrar", on_click=exit_window, icon=ft.Icons.ARROW_BACK, height=45)
+    btn_productos = ft.Button("Ver Lista de Productos", on_click=mostrar_productos, icon=ft.Icons.INVENTORY, height=45)
+    btn_ventas = ft.Button("Ver Lista de Ventas", on_click=mostrar_ventas, icon=ft.Icons.RECEIPT_LONG, height=45)
+    btnCerrar = ft.Button("Cerrar", on_click=exit_window, icon=ft.Icons.ARROW_BACK, height=45)
 
     buttons_row = ft.Row([btn_productos, btn_ventas, btnCerrar], alignment=ft.MainAxisAlignment.CENTER, spacing=20)
 

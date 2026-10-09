@@ -20,7 +20,7 @@ def dark_mode(page: ft.Page):
         )
         page.update()    
 
-    page.theme_mode = ft.ThemeMode.LIGHT
+    #page.theme_mode = ft.ThemeMode.DARK
 
     theme_swith = ft.Switch( 
         label_position=ft.LabelPosition.LEFT, 
