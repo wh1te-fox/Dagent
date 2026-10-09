@@ -5,7 +5,9 @@ def input_sale(page: ft.Page):
     from services.database import obtener_producto_por_codigo, guardar_venta
     
     page.controls.clear()
-    page.vertical_alignment = ft.MainAxisAlignment.CENTER
+    page.title = "Vender Producto"
+    page.padding = 30
+    page.vertical_alignment = ft.MainAxisAlignment.START
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
 
     producto_actual = None
@@ -211,61 +213,96 @@ def input_sale(page: ft.Page):
         dash_board(page)
 
     inpCodigo = ft.TextField(
-        label="Producto",
-        on_change=buscar_producto
+        label="Código de Producto",
+        on_change=buscar_producto,
+        width=350,
+        border_radius=10,
+        prefix_icon=ft.Icons.BARCODE_READER
     )
 
     inpCantidad = ft.Dropdown(
         label="Cantidad",
-        on_select=calcular_total
+        on_change=calcular_total,
+        width=350,
+        border_radius=10
     )
 
     inpPrecio = ft.TextField(
-        label="Precio",
-        read_only=True
+        label="Precio Unitario",
+        read_only=True,
+        width=350,
+        border_radius=10,
+        prefix_icon=ft.Icons.ATTACH_MONEY
     )
 
-    txtPrecio = ft.Text("Precio")
-    txtSubTotal = ft.Text("Sub Total")
-    txtMensaje = ft.Text("")
+    txtPrecio = ft.Text("Precio", size=14, weight=ft.FontWeight.W_500)
+    txtSubTotal = ft.Text("Sub Total", size=16, weight=ft.FontWeight.BOLD, color=ft.Colors.GREEN_700)
+    txtMensaje = ft.Text("", size=14)
 
     inpDescuento = ft.TextField(
-        label="Descuento",
-        on_change=calcular_total
+        label="Descuento (%)",
+        on_change=calcular_total,
+        width=350,
+        border_radius=10,
+        prefix_icon=ft.Icons.PERCENT
     )
 
-    btnGuardar = ft.Button(
-        "Guardar",
-        on_click=save_input
+    btnGuardar = ft.ElevatedButton(
+        "Guardar Venta",
+        on_click=save_input,
+        icon=ft.Icons.SAVE,
+        width=150,
+        height=45
     )
 
-    btnLimpiar = ft.Button(
+    btnLimpiar = ft.ElevatedButton(
         "Limpiar",
-        on_click=clear_input
+        on_click=clear_input,
+        icon=ft.Icons.CLEAR_ALL,
+        width=120,
+        height=45
     )
 
-    btnCerrar = ft.Button(
+    btnCerrar = ft.ElevatedButton(
         "Cerrar",
-        on_click=exit_window
+        on_click=exit_window,
+        icon=ft.Icons.ARROW_BACK,
+        width=120,
+        height=45
+    )
+
+    header_row = ft.Row([
+        ft.Icon(ft.Icons.POINT_OF_SALE, size=32, color=ft.Colors.BLUE),
+        ft.Text("Vender Producto", size=30, weight=ft.FontWeight.W_900, selectable=True)
+    ], alignment=ft.MainAxisAlignment.CENTER, spacing=15)
+
+    form_card = ft.Card(
+        content=ft.Container(
+            content=ft.Column([
+                inpCodigo,
+                inpPrecio,
+                inpCantidad,
+                inpDescuento,
+                ft.Divider(),
+                txtSubTotal,
+                txtMensaje
+            ], spacing=15, horizontal_alignment=ft.CrossAxisAlignment.CENTER),
+            padding=25,
+            width=450
+        )
+    )
+
+    buttons_row = ft.Row(
+        controls=[btnGuardar, btnLimpiar, btnCerrar],
+        alignment=ft.MainAxisAlignment.CENTER,
+        spacing=15
     )
 
     page.add(
-
-        ft.Text(
-            "Vender Producto",
-            size=20,
-            weight=ft.FontWeight.BOLD,
-            color=ft.Colors.BLUE
-        ),
-        inpCodigo,
-        inpCantidad,
-        inpPrecio,
-        txtPrecio,
-        txtSubTotal,
-        txtMensaje,
-        inpDescuento,
-
-        btnGuardar,
-        btnLimpiar,
-        btnCerrar
+        header_row,
+        ft.Divider(height=20, color=ft.Colors.TRANSPARENT),
+        form_card,
+        ft.Divider(height=20, color=ft.Colors.TRANSPARENT),
+        buttons_row
     )
+    page.update()
