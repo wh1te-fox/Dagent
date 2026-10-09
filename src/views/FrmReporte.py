@@ -43,11 +43,7 @@ def list_report(page: ft.Page):
                 ft.DataColumn(ft.Text("Precio", weight=ft.FontWeight.BOLD)),
                 ft.DataColumn(ft.Text("Existencia", weight=ft.FontWeight.BOLD)),
             ],
-            rows=filas_productos,
-            border=ft.border.all(1, ft.Colors.GREY_300),
-            border_radius=10,
-            vertical_lines=ft.BorderSide(1, ft.Colors.GREY_300),
-            horizontal_lines=ft.BorderSide(1, ft.Colors.GREY_300),
+            rows=filas_productos
         )
 
         content_container.controls.append(
@@ -96,11 +92,7 @@ def list_report(page: ft.Page):
                 ft.DataColumn(ft.Text("Descuento", weight=ft.FontWeight.BOLD)),
                 ft.DataColumn(ft.Text("Total", weight=ft.FontWeight.BOLD)),
             ],
-            rows=filas,
-            border=ft.border.all(1, ft.Colors.GREY_300),
-            border_radius=10,
-            vertical_lines=ft.BorderSide(1, ft.Colors.GREY_300),
-            horizontal_lines=ft.BorderSide(1, ft.Colors.GREY_300),
+            rows=filas
         )
 
         content_container.controls.append(
