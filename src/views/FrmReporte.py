@@ -7,7 +7,8 @@ def list_report(page: ft.Page):
     page.controls.clear()
     page.vertical_alignment = ft.MainAxisAlignment.START
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
-    page.padding = 20
+    page.padding = 30
+    page.title = "Sistema de Consultas"
 
     def exit_window(e):
         dash_board(page)
@@ -15,7 +16,7 @@ def list_report(page: ft.Page):
     ventas = obtener_ventas()
     productos = obtener_productos()
 
-    content_container = ft.Column(scroll=ft.ScrollMode.AUTO, expand=True)
+    content_container = ft.Column(scroll=ft.ScrollMode.AUTO, expand=True, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
 
     def mostrar_productos(e=None):
         content_container.controls.clear()
@@ -36,25 +37,33 @@ def list_report(page: ft.Page):
 
         tabla_productos = ft.DataTable(
             columns=[
-                ft.DataColumn(ft.Text("Codigo")),
-                ft.DataColumn(ft.Text("Producto")),
-                ft.DataColumn(ft.Text("Categoria")),
-                ft.DataColumn(ft.Text("Precio")),
-                ft.DataColumn(ft.Text("Existencia")),
+                ft.DataColumn(ft.Text("Codigo", weight=ft.FontWeight.BOLD)),
+                ft.DataColumn(ft.Text("Producto", weight=ft.FontWeight.BOLD)),
+                ft.DataColumn(ft.Text("Categoria", weight=ft.FontWeight.BOLD)),
+                ft.DataColumn(ft.Text("Precio", weight=ft.FontWeight.BOLD)),
+                ft.DataColumn(ft.Text("Existencia", weight=ft.FontWeight.BOLD)),
             ],
-            rows=filas_productos
+            rows=filas_productos,
+            border=ft.border.all(1, ft.Colors.GREY_300),
+            border_radius=10,
+            vertical_lines=ft.border.border_side.BorderSide(1, ft.Colors.GREY_300),
+            horizontal_lines=ft.border.border_side.BorderSide(1, ft.Colors.GREY_300),
         )
 
         content_container.controls.append(
             ft.Column([
-                ft.Text(
-                    "Lista de Productos",
-                    size=20,
-                    weight=ft.FontWeight.BOLD,
-                    color=ft.Colors.BLUE
-                ),
+                ft.Row([
+                    ft.Icon(ft.Icons.INVENTORY, color=ft.Colors.BLUE_400),
+                    ft.Text(
+                        "Lista de Productos",
+                        size=20,
+                        weight=ft.FontWeight.BOLD,
+                        color=ft.Colors.BLUE
+                    )
+                ], spacing=10),
+                ft.Divider(),
                 tabla_productos
-            ], spacing=10)
+            ], spacing=15, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
         )
         page.update()
 
@@ -79,48 +88,66 @@ def list_report(page: ft.Page):
 
         tabla = ft.DataTable(
             columns=[
-                ft.DataColumn(ft.Text("Codigo")),
-                ft.DataColumn(ft.Text("Producto")),
-                ft.DataColumn(ft.Text("Cantidad")),
-                ft.DataColumn(ft.Text("Precio")),
-                ft.DataColumn(ft.Text("Subtotal")),
-                ft.DataColumn(ft.Text("Descuento")),
-                ft.DataColumn(ft.Text("Total")),
+                ft.DataColumn(ft.Text("Codigo", weight=ft.FontWeight.BOLD)),
+                ft.DataColumn(ft.Text("Producto", weight=ft.FontWeight.BOLD)),
+                ft.DataColumn(ft.Text("Cantidad", weight=ft.FontWeight.BOLD)),
+                ft.DataColumn(ft.Text("Precio", weight=ft.FontWeight.BOLD)),
+                ft.DataColumn(ft.Text("Subtotal", weight=ft.FontWeight.BOLD)),
+                ft.DataColumn(ft.Text("Descuento", weight=ft.FontWeight.BOLD)),
+                ft.DataColumn(ft.Text("Total", weight=ft.FontWeight.BOLD)),
             ],
-            rows=filas
+            rows=filas,
+            border=ft.border.all(1, ft.Colors.GREY_300),
+            border_radius=10,
+            vertical_lines=ft.border.border_side.BorderSide(1, ft.Colors.GREY_300),
+            horizontal_lines=ft.border.border_side.BorderSide(1, ft.Colors.GREY_300),
         )
 
         content_container.controls.append(
             ft.Column([
-                ft.Text(
-                    "Lista de Ventas",
-                    size=20,
-                    weight=ft.FontWeight.BOLD,
-                    color=ft.Colors.BLUE
-                ),
+                ft.Row([
+                    ft.Icon(ft.Icons.RECEIPT_LONG, color=ft.Colors.BLUE_400),
+                    ft.Text(
+                        "Lista de Ventas",
+                        size=20,
+                        weight=ft.FontWeight.BOLD,
+                        color=ft.Colors.BLUE
+                    )
+                ], spacing=10),
+                ft.Divider(),
                 tabla
-            ], spacing=10)
+            ], spacing=15, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
         )
         page.update()
 
     # Mostrar productos por defecto
     mostrar_productos()
 
-    btn_productos = ft.Button("Ver Lista de Productos", on_click=mostrar_productos, icon=ft.Icons.INVENTORY)
-    btn_ventas = ft.Button("Ver Lista de Ventas", on_click=mostrar_ventas, icon=ft.Icons.RECEIPT_LONG)
-    btnCerrar = ft.Button("Cerrar", on_click=exit_window)
+    btn_productos = ft.ElevatedButton("Ver Lista de Productos", on_click=mostrar_productos, icon=ft.Icons.INVENTORY, height=45)
+    btn_ventas = ft.ElevatedButton("Ver Lista de Ventas", on_click=mostrar_ventas, icon=ft.Icons.RECEIPT_LONG, height=45)
+    btnCerrar = ft.ElevatedButton("Cerrar", on_click=exit_window, icon=ft.Icons.ARROW_BACK, height=45)
 
     buttons_row = ft.Row([btn_productos, btn_ventas, btnCerrar], alignment=ft.MainAxisAlignment.CENTER, spacing=20)
 
+    header_row = ft.Row([
+        ft.Icon(ft.Icons.ASSESSMENT, size=32, color=ft.Colors.BLUE),
+        ft.Text("Sistema de Consultas", size=30, weight=ft.FontWeight.W_900, selectable=True)
+    ], alignment=ft.MainAxisAlignment.CENTER, spacing=15)
+
+    report_card = ft.Card(
+        content=ft.Container(
+            content=content_container,
+            padding=20,
+            height=450,
+            width=900
+        )
+    )
+
     page.add(
-        ft.Text(
-            "Sistema de Consultas",
-            size=30,
-            weight=ft.FontWeight.W_900,
-        ),
-        ft.Divider(height=20),
+        header_row,
+        ft.Divider(height=20, color=ft.Colors.TRANSPARENT),
         buttons_row,
-        ft.Divider(height=20),
-        content_container
+        ft.Divider(height=20, color=ft.Colors.TRANSPARENT),
+        report_card
     )
     page.update()
