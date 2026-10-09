@@ -222,7 +222,7 @@ def input_sale(page: ft.Page):
 
     inpCantidad = ft.Dropdown(
         label="Cantidad",
-        on_change=calcular_total,
+        on_select=calcular_total,
         width=350,
         border_radius=10
     )
@@ -247,7 +247,7 @@ def input_sale(page: ft.Page):
         prefix_icon=ft.Icons.PERCENT
     )
 
-    btnGuardar = ft.ElevatedButton(
+    btnGuardar = ft.Button(
         "Guardar Venta",
         on_click=save_input,
         icon=ft.Icons.SAVE,
@@ -255,7 +255,7 @@ def input_sale(page: ft.Page):
         height=45
     )
 
-    btnLimpiar = ft.ElevatedButton(
+    btnLimpiar = ft.Button(
         "Limpiar",
         on_click=clear_input,
         icon=ft.Icons.CLEAR_ALL,
@@ -263,7 +263,7 @@ def input_sale(page: ft.Page):
         height=45
     )
 
-    btnCerrar = ft.ElevatedButton(
+    btnCerrar = ft.Button(
         "Cerrar",
         on_click=exit_window,
         icon=ft.Icons.ARROW_BACK,
