@@ -15,7 +15,7 @@ def main(page: ft.Page):
         src="assets/logo.png",
         width=120,
         height=120,
-        fit=ft.ImageFit.CONTAIN
+        fit="contain"
     )
 
     welcome_text = ft.Text(
