@@ -46,8 +46,8 @@ def list_report(page: ft.Page):
             rows=filas_productos,
             border=ft.border.all(1, ft.Colors.GREY_300),
             border_radius=10,
-            vertical_lines=ft.border.border_side.BorderSide(1, ft.Colors.GREY_300),
-            horizontal_lines=ft.border.border_side.BorderSide(1, ft.Colors.GREY_300),
+            vertical_lines=ft.BorderSide(1, ft.Colors.GREY_300),
+            horizontal_lines=ft.BorderSide(1, ft.Colors.GREY_300),
         )
 
         content_container.controls.append(
@@ -99,8 +99,8 @@ def list_report(page: ft.Page):
             rows=filas,
             border=ft.border.all(1, ft.Colors.GREY_300),
             border_radius=10,
-            vertical_lines=ft.border.border_side.BorderSide(1, ft.Colors.GREY_300),
-            horizontal_lines=ft.border.border_side.BorderSide(1, ft.Colors.GREY_300),
+            vertical_lines=ft.BorderSide(1, ft.Colors.GREY_300),
+            horizontal_lines=ft.BorderSide(1, ft.Colors.GREY_300),
         )
 
         content_container.controls.append(
