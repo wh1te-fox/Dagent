@@ -13,20 +13,27 @@ def search(page: ft.Page):
 
     page.update()
     page.controls.clear()
+    page.title = "Buscar Clientes"
+    page.padding = 30
+    page.vertical_alignment = ft.MainAxisAlignment.START
+    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
 
-    page.add (ft.Text("Buscar Clientes", 
-        size=30, weight=ft.FontWeight.W_900, 
-        selectable=True))
+    header_row = ft.Row([
+        ft.Icon(ft.Icons.PERSON_SEARCH, size=32, color=ft.Colors.BLUE),
+        ft.Text("Buscar Clientes", size=30, weight=ft.FontWeight.W_900, selectable=True)
+    ], alignment=ft.MainAxisAlignment.CENTER, spacing=15)
 
-    parameter_name = InputModel('nombre')
+    parameter_name = InputModel('Nombre')
     execute_entry = parameter_name.entry_style()
+    execute_entry.width = 200
 
-    last_name = InputModel('apellido')
+    last_name = InputModel('Apellido')
     execute_entry1 = last_name.entry_style()
+    execute_entry1.width = 200
 
     txtMensaje = ft.Text("", size=16)
     edit_switch = ft.Switch(label="Modo Edición", value=False, on_change=lambda _: realizar_busqueda())
-    results_column = ft.Column(scroll=ft.ScrollMode.AUTO, height=300)
+    results_column = ft.Column(scroll=ft.ScrollMode.AUTO, height=320, width=600, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
 
     def realizar_busqueda(e=None):
         nombre = execute_entry.value.strip() if execute_entry.value else ""
@@ -57,17 +64,21 @@ def search(page: ft.Page):
                         ft.Card(
                             content=ft.Container(
                                 content=ft.Column([
-                                    ft.Text(f"Nombre: {cli[1]} {cli[2]}", weight=ft.FontWeight.BOLD),
-                                    ft.Text(f"ID: {cli[0]}", size=12, color=ft.Colors.GREY_700)
-                                ]),
-                                padding=10
-                            )
+                                    ft.Row([
+                                        ft.Icon(ft.Icons.PERSON, color=ft.Colors.BLUE_400),
+                                        ft.Text(f"{cli[1]} {cli[2]}", weight=ft.FontWeight.BOLD, size=16)
+                                    ], spacing=10),
+                                    ft.Text(f"ID del Cliente: {cli[0]}", size=12, color=ft.Colors.GREY_700)
+                                ], spacing=5),
+                                padding=15
+                            ),
+                            width=500
                         )
                     )
                 else:
                     client_id = cli[0]
-                    tf_nombre = ft.TextField(value=cli[1], label="Nombre", width=180)
-                    tf_apellido = ft.TextField(value=cli[2], label="Apellido", width=180)
+                    tf_nombre = ft.TextField(value=cli[1], label="Nombre", width=170)
+                    tf_apellido = ft.TextField(value=cli[2], label="Apellido", width=170)
 
                     def make_update_handler(cid, tn, ta):
                         def update_click(e):
@@ -91,10 +102,11 @@ def search(page: ft.Page):
                             content=ft.Container(
                                 content=ft.Column([
                                     ft.Text(f"ID: {client_id}", size=12, color=ft.Colors.GREY_700),
-                                    ft.Row([tf_nombre, tf_apellido, btn_actualizar], alignment=ft.MainAxisAlignment.START, spacing=15)
-                                ]),
+                                    ft.Row([tf_nombre, tf_apellido, btn_actualizar], alignment=ft.MainAxisAlignment.SPACE_BETWEEN, spacing=10)
+                                ], spacing=8),
                                 padding=15
-                            )
+                            ),
+                            width=550
                         )
                     )
 
@@ -105,27 +117,28 @@ def search(page: ft.Page):
 
     btnCerrar = ft.Button(
         "Cerrar",
-        on_click=exit_window
+        on_click=exit_window,
+        icon=ft.Icons.ARROW_BACK,
+        height=45
     )
 
     search_button = ButtonIcon(ft.Icons.SEARCH_OUTLINED, ft.Colors.GREEN_300, realizar_busqueda, "Buscar")
     add_search = search_button.model_icon()
 
-    element_column = Column(execute_entry, execute_entry1)
-    execute_column = element_column.view_column()
+    search_inputs_row = ft.Row(
+        controls=[execute_entry, execute_entry1, add_search, btnCerrar],
+        alignment=ft.MainAxisAlignment.CENTER,
+        spacing=15
+    )
 
     page.add(
-        ft.Row(
-            controls=[
-                execute_column,
-                add_search,
-                btnCerrar
-            ],
-            alignment=ft.MainAxisAlignment.CENTER,
-            spacing=20
-        ),
+        header_row,
+        ft.Divider(height=20, color=ft.Colors.TRANSPARENT),
+        search_inputs_row,
+        ft.Divider(height=10, color=ft.Colors.TRANSPARENT),
         edit_switch,
         txtMensaje,
+        ft.Divider(height=10, color=ft.Colors.TRANSPARENT),
         results_column
     )
     page.update()
