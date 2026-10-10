@@ -14,7 +14,7 @@ class NavigationBar:
             min_width=100,
             min_extended_width=200,
             group_alignment=-0.9,
-            expand=True,
+            height=650,
             on_change=self.on_change,
             destinations=[
                 self.element_destination(
