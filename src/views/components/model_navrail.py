@@ -1,9 +1,11 @@
 import flet as ft 
 
-class NavigationBar:
 
-    def __init__(self, on_changes):
-        self.on_changes = on_changes
+class NavigationBar:
+    """Navigation rail component for main application routing."""
+
+    def __init__(self, on_change):
+        self.on_change = on_change
 
     def build(self):
         return ft.NavigationRail(
@@ -13,40 +15,40 @@ class NavigationBar:
             min_extended_width=200,
             group_alignment=-0.9,
             expand=True,
-            on_change=self.on_changes,
+            on_change=self.on_change,
             destinations=[
                 self.element_destination(
-                    "Perfil",
+                    "Profile",
                     ft.Icons.ACCOUNT_CIRCLE_OUTLINED,
                     ft.Icons.ACCOUNT_CIRCLE,
                 ),
                 self.element_destination(
-                    "Realizar Venta",
+                    "Sales",
                     ft.Icons.SHOPPING_CART_OUTLINED,
                     ft.Icons.SHOPPING_CART_ROUNDED
                 ),
                 self.element_destination(
-                    "Registrar Producto",
+                    "Add Product",
                     ft.Icons.ADD_CIRCLE_OUTLINE,
                     ft.Icons.ADD_CIRCLE_OUTLINED
                 ),
                 self.element_destination(
-                    "Registrar Cliente",
+                    "Add Client",
                     ft.Icons.PERSON_ADD_ALT,
                     ft.Icons.PERSON_ADD_ALT_SHARP
                 ),
                 self.element_destination(
-                    "Buscar Clientes",
+                    "Search Clients",
                     ft.Icons.PERSON_SEARCH_OUTLINED,
                     ft.Icons.PERSON_SEARCH_ROUNDED
                 ),
                 self.element_destination(
-                    "Reportes",
+                    "Reports",
                     ft.Icons.ASSESSMENT_OUTLINED,
                     ft.Icons.ASSESSMENT
                 ),
                 self.element_destination(
-                    "Configuración",
+                    "Settings",
                     ft.Icons.SETTINGS_OUTLINED,
                     ft.Icons.SETTINGS
                 ),
@@ -54,12 +56,11 @@ class NavigationBar:
             ],
         )
 
-    def element_destination(self, label, icons, icon_selected): # label = name icon
+    def element_destination(self, label, icons, icon_selected):
         self.element = ft.NavigationRailDestination(
                 icon=icons,
                 selected_icon=icon_selected,
                 label=label
             )
         return self.element
-    
 

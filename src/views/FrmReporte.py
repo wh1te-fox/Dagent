@@ -1,9 +1,11 @@
+"""Reports view module for viewing sales and product inventories."""
 import flet as ft
-from services.database import obtener_ventas, obtener_productos
+from services.database import obtener_productos, obtener_ventas
 from views.menu_interface import dash_board
 
 
 def list_report(page: ft.Page):
+    """Renders the reports and queries interface."""
     page.controls.clear()
     page.vertical_alignment = ft.MainAxisAlignment.START
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
@@ -13,29 +15,29 @@ def list_report(page: ft.Page):
     def exit_window(e):
         dash_board(page)
 
-    ventas = obtener_ventas()
-    productos = obtener_productos()
+    sales = obtener_ventas()
+    products = obtener_productos()
 
     content_container = ft.Column(scroll=ft.ScrollMode.AUTO, expand=True, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
 
-    def mostrar_productos(e=None):
+    def show_products(e=None):
         content_container.controls.clear()
-        filas_productos = []
+        product_rows = []
 
-        for producto in productos:
-            filas_productos.append(
+        for product in products:
+            product_rows.append(
                 ft.DataRow(
                     cells=[
-                        ft.DataCell(ft.Text(producto[1])),
-                        ft.DataCell(ft.Text(producto[2])),
-                        ft.DataCell(ft.Text(producto[3])),
-                        ft.DataCell(ft.Text(f"{producto[4]:.2f}")),
-                        ft.DataCell(ft.Text(str(producto[5]))),
+                        ft.DataCell(ft.Text(product[1])),
+                        ft.DataCell(ft.Text(product[2])),
+                        ft.DataCell(ft.Text(product[3])),
+                        ft.DataCell(ft.Text(f"{product[4]:.2f}")),
+                        ft.DataCell(ft.Text(str(product[5]))),
                     ]
                 )
             )
 
-        tabla_productos = ft.DataTable(
+        table_products = ft.DataTable(
             columns=[
                 ft.DataColumn(ft.Text("Codigo", weight=ft.FontWeight.BOLD)),
                 ft.DataColumn(ft.Text("Producto", weight=ft.FontWeight.BOLD)),
@@ -43,7 +45,7 @@ def list_report(page: ft.Page):
                 ft.DataColumn(ft.Text("Precio", weight=ft.FontWeight.BOLD)),
                 ft.DataColumn(ft.Text("Existencia", weight=ft.FontWeight.BOLD)),
             ],
-            rows=filas_productos
+            rows=product_rows
         )
 
         content_container.controls.append(
@@ -58,31 +60,31 @@ def list_report(page: ft.Page):
                     )
                 ], spacing=10),
                 ft.Divider(),
-                tabla_productos
+                table_products
             ], spacing=15, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
         )
         page.update()
 
-    def mostrar_ventas(e=None):
+    def show_sales(e=None):
         content_container.controls.clear()
-        filas = []
+        sales_rows = []
 
-        for venta in ventas:
-            filas.append(
+        for sale in sales:
+            sales_rows.append(
                 ft.DataRow(
                     cells=[
-                        ft.DataCell(ft.Text(venta[0])),
-                        ft.DataCell(ft.Text(venta[1])),
-                        ft.DataCell(ft.Text(str(venta[2]))),
-                        ft.DataCell(ft.Text(f"{venta[3]:.2f}")),
-                        ft.DataCell(ft.Text(f"{venta[4]:.2f}")),
-                        ft.DataCell(ft.Text(f"{venta[5]:.2f}%")),
-                        ft.DataCell(ft.Text(f"{venta[6]:.2f}")),
+                        ft.DataCell(ft.Text(sale[0])),
+                        ft.DataCell(ft.Text(sale[1])),
+                        ft.DataCell(ft.Text(str(sale[2]))),
+                        ft.DataCell(ft.Text(f"{sale[3]:.2f}")),
+                        ft.DataCell(ft.Text(f"{sale[4]:.2f}")),
+                        ft.DataCell(ft.Text(f"{sale[5]:.2f}%")),
+                        ft.DataCell(ft.Text(f"{sale[6]:.2f}")),
                     ]
                 )
             )
 
-        tabla = ft.DataTable(
+        table_sales = ft.DataTable(
             columns=[
                 ft.DataColumn(ft.Text("Codigo", weight=ft.FontWeight.BOLD)),
                 ft.DataColumn(ft.Text("Producto", weight=ft.FontWeight.BOLD)),
@@ -92,7 +94,7 @@ def list_report(page: ft.Page):
                 ft.DataColumn(ft.Text("Descuento", weight=ft.FontWeight.BOLD)),
                 ft.DataColumn(ft.Text("Total", weight=ft.FontWeight.BOLD)),
             ],
-            rows=filas
+            rows=sales_rows
         )
 
         content_container.controls.append(
@@ -107,19 +109,18 @@ def list_report(page: ft.Page):
                     )
                 ], spacing=10),
                 ft.Divider(),
-                tabla
+                table_sales
             ], spacing=15, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
         )
         page.update()
 
-    # Mostrar productos por defecto
-    mostrar_productos()
+    show_products()
 
-    btn_productos = ft.Button("Ver Lista de Productos", on_click=mostrar_productos, icon=ft.Icons.INVENTORY, height=45)
-    btn_ventas = ft.Button("Ver Lista de Ventas", on_click=mostrar_ventas, icon=ft.Icons.RECEIPT_LONG, height=45)
-    btnCerrar = ft.Button("Cerrar", on_click=exit_window, icon=ft.Icons.ARROW_BACK, height=45)
+    btn_products = ft.Button("Ver Lista de Productos", on_click=show_products, icon=ft.Icons.INVENTORY, height=45)
+    btn_sales = ft.Button("Ver Lista de Ventas", on_click=show_sales, icon=ft.Icons.RECEIPT_LONG, height=45)
+    btn_close = ft.Button("Cerrar", on_click=exit_window, icon=ft.Icons.ARROW_BACK, height=45)
 
-    buttons_row = ft.Row([btn_productos, btn_ventas, btnCerrar], alignment=ft.MainAxisAlignment.CENTER, spacing=20)
+    buttons_row = ft.Row([btn_products, btn_sales, btn_close], alignment=ft.MainAxisAlignment.CENTER, spacing=20)
 
     header_row = ft.Row([
         ft.Icon(ft.Icons.ASSESSMENT, size=32, color=ft.Colors.BLUE),
@@ -143,3 +144,4 @@ def list_report(page: ft.Page):
         report_card
     )
     page.update()
+

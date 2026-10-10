@@ -1,42 +1,40 @@
-# si creo un botonn lo que cambia seria el texto, ahora otra cosa que cambauria seria la funcion que hace el boton, 
-# cunstruir una clase.
-# lo que necesirtamos es encapsular codigo
-import flet as ft 
+import flet as ft
 
 
-# crea atributos para que el boton se areutilizable, y solo pasar los paramtros para usarlo
-class Control_b:
-    def __init__(self, text_b, parameter_b, page): 
-        self.text_b = text_b
-        #self.parametroB = parameter_b # error
-        self.parameter_b = parameter_b
+class ControlButton:
+    """Reusable button component that encapsulates click actions and page reference."""
+
+    def __init__(self, button_text, action_parameter, page):
+        self.button_text = button_text
+        self.action_parameter = action_parameter
         self.page = page
-        
-
-    #def view1(self, views): # mala practica, no necesita paramtros 
-    #   self.views = ft.ElevatedButton()
-    #    pass
 
     def view(self):
-        self.boton = ft.Button(
-            content=ft.Text(self.text_b),
-            on_click=lambda e: self.parameter_b(self.page) # usamos self para poder usar los paramtros 
+        self.button = ft.Button(
+            content=ft.Text(self.button_text),
+            on_click=lambda e: self.action_parameter(self.page)
         )
-        return self.boton # retornar el boton y que me permita hacer in .add
+        return self.button
+
+
+# Backward compatibility alias
+Control_b = ControlButton
+
 
 class ButtonIcon:
-    def __init__(self, name_icon, color_icon, funcion, hover_text: str):
-        self.name_icon = name_icon
-        self.color_icon = color_icon
-        self.funcion = funcion
+    """Reusable icon button component with tooltip and click action."""
+
+    def __init__(self, icon_name, icon_color, callback_function, hover_text: str):
+        self.icon_name = icon_name
+        self.icon_color = icon_color
+        self.callback_function = callback_function
         self.hover_text = hover_text
 
     def model_icon(self):
         self.button = ft.IconButton(
-                        icon = self.name_icon,
-                        icon_color = self.color_icon,
-                        on_click = lambda _: self.funcion(),
-                        tooltip = self.hover_text
-                        )
-
+            icon=self.icon_name,
+            icon_color=self.icon_color,
+            on_click=lambda _: self.callback_function(),
+            tooltip=self.hover_text
+        )
         return self.button

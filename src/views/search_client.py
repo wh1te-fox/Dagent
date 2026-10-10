@@ -1,15 +1,16 @@
+"""Client search and management view module."""
 import flet as ft
 import sqlite3
 from flet import SnackBar
 
-# lista de clientes
-def search(page: ft.Page):
 
-    from views.menu_interface import dash_board
-    from views.components.model_textfield import InputModel
-    from views.components.modelButton import Control_b, ButtonIcon
+def search(page: ft.Page):
+    """Renders the client search and editing interface."""
+    from services.database import actualizar_cliente, buscar_clientes
     from views.components.model_alignment import Column
-    from services.database import buscar_clientes, actualizar_cliente
+    from views.components.modelButton import ButtonIcon, Control_b
+    from views.components.model_textfield import InputModel
+    from views.menu_interface import dash_board
 
     page.update()
     page.controls.clear()
@@ -23,42 +24,42 @@ def search(page: ft.Page):
         ft.Text("Buscar Clientes", size=30, weight=ft.FontWeight.W_900, selectable=True)
     ], alignment=ft.MainAxisAlignment.CENTER, spacing=15)
 
-    parameter_name = InputModel('Nombre')
-    execute_entry = parameter_name.entry_style()
-    execute_entry.width = 200
+    first_name_input = InputModel('Nombre')
+    first_name_field = first_name_input.entry_style()
+    first_name_field.width = 200
 
-    last_name = InputModel('Apellido')
-    execute_entry1 = last_name.entry_style()
-    execute_entry1.width = 200
+    last_name_input = InputModel('Apellido')
+    last_name_field = last_name_input.entry_style()
+    last_name_field.width = 200
 
-    txtMensaje = ft.Text("", size=16)
-    edit_switch = ft.Switch(label="Modo Edición", value=False, on_change=lambda _: realizar_busqueda())
+    message_text = ft.Text("", size=16)
+    edit_switch = ft.Switch(label="Modo Edición", value=False, on_change=lambda _: perform_search())
     results_column = ft.Column(scroll=ft.ScrollMode.AUTO, height=320, width=600, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
 
-    def realizar_busqueda(e=None):
-        nombre = execute_entry.value.strip() if execute_entry.value else ""
-        apellido = execute_entry1.value.strip() if execute_entry1.value else ""
+    def perform_search(e=None):
+        first_name = first_name_field.value.strip() if first_name_field.value else ""
+        last_name = last_name_field.value.strip() if last_name_field.value else ""
 
-        execute_entry.error_text = None
-        execute_entry1.error_text = None
-        txtMensaje.value = ""
+        first_name_field.error_text = None
+        last_name_field.error_text = None
+        message_text.value = ""
         results_column.controls.clear()
 
-        if not nombre and not apellido:
-            txtMensaje.value = "Ingrese al menos un criterio de búsqueda (nombre o apellido)"
-            txtMensaje.color = "red"
+        if not first_name and not last_name:
+            message_text.value = "Ingrese al menos un criterio de búsqueda (nombre o apellido)"
+            message_text.color = "red"
             page.update()
             return
 
-        clientes = buscar_clientes(nombre, apellido)
+        clients = buscar_clientes(first_name, last_name)
 
-        if not clientes:
-            txtMensaje.value = "No se encontraron clientes"
-            txtMensaje.color = "orange"
+        if not clients:
+            message_text.value = "No se encontraron clientes"
+            message_text.color = "orange"
         else:
-            txtMensaje.value = f"Se encontraron {len(clientes)} cliente(s)"
-            txtMensaje.color = "green"
-            for cli in clientes:
+            message_text.value = f"Se encontraron {len(clients)} cliente(s)"
+            message_text.color = "green"
+            for cli in clients:
                 if not edit_switch.value:
                     results_column.controls.append(
                         ft.Card(
@@ -86,12 +87,12 @@ def search(page: ft.Page):
                             a = ta.value.strip() if ta.value else ""
                             if n and a:
                                 actualizar_cliente(cid, n, a)
-                                txtMensaje.value = f"Cliente ID {cid} actualizado correctamente"
-                                txtMensaje.color = "green"
+                                message_text.value = f"Cliente ID {cid} actualizado correctamente"
+                                message_text.color = "green"
                                 page.update()
                             else:
-                                txtMensaje.value = "Nombre y apellido son obligatorios para actualizar"
-                                txtMensaje.color = "red"
+                                message_text.value = "Nombre y apellido son obligatorios para actualizar"
+                                message_text.color = "red"
                                 page.update()
                         return update_click
 
@@ -115,18 +116,18 @@ def search(page: ft.Page):
     def exit_window(e):
         dash_board(page)
 
-    btnCerrar = ft.Button(
+    btn_close = ft.Button(
         "Cerrar",
         on_click=exit_window,
         icon=ft.Icons.ARROW_BACK,
         height=45
     )
 
-    search_button = ButtonIcon(ft.Icons.SEARCH_OUTLINED, ft.Colors.GREEN_300, realizar_busqueda, "Buscar")
+    search_button = ButtonIcon(ft.Icons.SEARCH_OUTLINED, ft.Colors.GREEN_300, perform_search, "Buscar")
     add_search = search_button.model_icon()
 
     search_inputs_row = ft.Row(
-        controls=[execute_entry, execute_entry1, add_search, btnCerrar],
+        controls=[first_name_field, last_name_field, add_search, btn_close],
         alignment=ft.MainAxisAlignment.CENTER,
         spacing=15
     )
@@ -137,10 +138,8 @@ def search(page: ft.Page):
         search_inputs_row,
         ft.Divider(height=10, color=ft.Colors.TRANSPARENT),
         edit_switch,
-        txtMensaje,
+        message_text,
         ft.Divider(height=10, color=ft.Colors.TRANSPARENT),
         results_column
     )
     page.update()
-
-print("search_client")

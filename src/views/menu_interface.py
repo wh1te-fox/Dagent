@@ -1,16 +1,18 @@
+"""Dashboard module providing main application navigation."""
 import flet as ft
 
+
 def dash_board(page: ft.Page):
-    from views.components.model_navrail import NavigationBar
-    from page import main as perfil
-    from views.search_client import search
-    from views.ui_settings import dark_mode
-    from views.add_product import main
-    from views.add_client import customer_page
-    from views.page_sale import input_sale
-    from views.FrmReporte import list_report
+    """Renders the dashboard interface with navigation rail and dynamic view loading."""
     from services.database import crear_bd
-    
+    from page import main as profile_view
+    from views.add_client import customer_page
+    from views.add_product import main as add_product_view
+    from views.FrmReporte import list_report
+    from views.page_sale import input_sale
+    from views.search_client import search as search_client_view
+    from views.components.model_navrail import NavigationBar
+    from views.ui_settings import dark_mode
 
     page.title = "Dagent"
     page.vertical_alignment = ft.MainAxisAlignment.START
@@ -19,26 +21,26 @@ def dash_board(page: ft.Page):
 
     def on_change(e):
         index = e.control.selected_index
-        print(f"Destino seleccionado: {index}")
+        print(f"Selected destination: {index}")
 
         page.controls.clear()
         page.update()
 
         execute_function = {
-            0:perfil,
-            1:input_sale,
-            2:main,
-            3:customer_page,
-            4:search,
-            5:list_report,
-            6:dark_mode,
-        } # refactorizar el orden de seleccion
+            0: profile_view,
+            1: input_sale,
+            2: add_product_view,
+            3: customer_page,
+            4: search_client_view,
+            5: list_report,
+            6: dark_mode,
+        }
 
         func = execute_function.get(index)
         if func:
             func(page)
         else:
-            print(f"No hay función asignada para index {index}")
+            print(f"No function assigned for index {index}")
 
-    nav = NavigationBar(on_changes=on_change)
+    nav = NavigationBar(on_change=on_change)
     page.add(nav.build())
