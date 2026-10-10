@@ -4,8 +4,8 @@ import flet as ft
 
 def main(page: ft.Page):
     """Renders the product registration interface."""
-    from views.components.modelButton import Control_b
-    from views.components.model_textfield import InputModel
+    from views.components.button import Control_b
+    from views.components.text_field import InputModel
     from services.database import guardar_producto as db_guardar_producto
 
     page.title = "Registrar Producto"

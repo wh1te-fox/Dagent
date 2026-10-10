@@ -10,7 +10,7 @@ def main(page: ft.Page):
     page.padding = 30
     page.controls.clear()
 
-    from views.components.modelButton import Control_b
+    from views.components.button import Control_b
     from views.menu_interface import dash_board
 
     logo_image = ft.Image(

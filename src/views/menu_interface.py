@@ -11,7 +11,7 @@ def dash_board(page: ft.Page):
     from views.report_view import list_report
     from views.page_sale import input_sale
     from views.search_client import search as search_client_view
-    from views.components.model_navrail import NavigationBar
+    from views.components.navigation_rail import NavigationBar
     from views.ui_settings import dark_mode
 
     page.title = "Dagent"

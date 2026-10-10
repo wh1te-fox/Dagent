@@ -7,9 +7,9 @@ from flet import SnackBar
 def search(page: ft.Page):
     """Renders the client search and editing interface."""
     from services.database import actualizar_cliente, buscar_clientes
-    from views.components.model_alignment import Column
-    from views.components.modelButton import ButtonIcon, Control_b
-    from views.components.model_textfield import InputModel
+    from views.components.alignment import Column
+    from views.components.button import ButtonIcon, Control_b
+    from views.components.text_field import InputModel
     from views.menu_interface import dash_board
 
     page.update()

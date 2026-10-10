@@ -4,8 +4,8 @@ import flet as ft
 
 def customer_page(page: ft.Page):
     """Renders the client registration interface."""
-    from views.components.modelButton import Control_b
-    from views.components.model_textfield import InputModel
+    from views.components.button import Control_b
+    from views.components.text_field import InputModel
     from views.menu_interface import dash_board
     from services.database import cliente_existe, guardar_cliente
     
