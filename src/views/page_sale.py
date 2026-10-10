@@ -1,8 +1,10 @@
+"""Sales transaction view module."""
 import flet as ft
 
 
 def input_sale(page: ft.Page):
-    from services.database import obtener_producto_por_codigo, guardar_venta
+    """Renders the sales processing interface."""
+    from services.database import guardar_venta, obtener_producto_por_codigo
     
     page.controls.clear()
     page.title = "Vender Producto"
@@ -10,201 +12,200 @@ def input_sale(page: ft.Page):
     page.vertical_alignment = ft.MainAxisAlignment.START
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
 
-    producto_actual = None
+    current_product = None
 
-    def buscar_producto(e):
-        nonlocal producto_actual
+    def search_product(e):
+        nonlocal current_product
 
-        codigo = inpCodigo.value.strip()
+        code = code_input.value.strip()
 
-        if codigo == "":
-            producto_actual = None
-            txtMensaje.value = ""
-            inpPrecio.value = ""
-            txtPrecio.value = "Precio"
-            inpCantidad.options = []
+        if code == "":
+            current_product = None
+            message_text.value = ""
+            price_field.value = ""
+            price_text.value = "Precio"
+            quantity_dropdown.options = []
             page.update()
             return
 
-        producto_actual = obtener_producto_por_codigo(codigo)
+        current_product = obtener_producto_por_codigo(code)
 
-        if producto_actual is None:
-            inpCodigo.error_text = "Producto no encontrado"
-            txtMensaje.value = "Producto no encontrado"
-            txtMensaje.color = "red"
+        if current_product is None:
+            code_input.error_text = "Producto no encontrado"
+            message_text.value = "Producto no encontrado"
+            message_text.color = "red"
 
-            inpPrecio.value = ""
-            txtPrecio.value = "Precio"
-            inpCantidad.options = []
+            price_field.value = ""
+            price_text.value = "Precio"
+            quantity_dropdown.options = []
 
         else:
-            inpCodigo.error_text = None
-            txtMensaje.value = ""
+            code_input.error_text = None
+            message_text.value = ""
             
-            inpPrecio.value = str(producto_actual[4])
-            txtPrecio.value = f"Precio: {producto_actual[4]}"
+            price_field.value = str(current_product[4])
+            price_text.value = f"Precio: {current_product[4]}"
 
-            inpCantidad.options = [
+            quantity_dropdown.options = [
                 ft.dropdown.Option(str(i))
-                for i in range(1, producto_actual[5] + 1)
+                for i in range(1, current_product[5] + 1)
             ]
 
-            if producto_actual[5] <= 0:
-                inpCantidad.options = []
-                txtMensaje.value = "Producto sin existencia"
-                txtMensaje.color = "red"
+            if current_product[5] <= 0:
+                quantity_dropdown.options = []
+                message_text.value = "Producto sin existencia"
+                message_text.color = "red"
 
         page.update()
 
-    def calcular_total(e):
+    def calculate_total(e):
         try:
-            cantidad = int(inpCantidad.value)
-            precio = float(inpPrecio.value)
+            quantity = int(quantity_dropdown.value)
+            price = float(price_field.value)
 
-            if cantidad <= 0:
-                txtSubTotal.value = "Sub Total"
+            if quantity <= 0:
+                subtotal_text.value = "Sub Total"
                 page.update()
                 return
 
-            subtotal = cantidad * precio
+            subtotal = quantity * price
 
-            descuento = float(inpDescuento.value or 0)
+            discount = float(discount_field.value or 0)
 
-            if descuento < 0 or descuento > 100:
-                txtSubTotal.value = "Descuento debe estar entre 0 y 100"
+            if discount < 0 or discount > 100:
+                subtotal_text.value = "Descuento debe estar entre 0 y 100"
                 page.update()
                 return
 
-            descuento_monto = subtotal * descuento / 100
+            discount_amount = subtotal * discount / 100
 
-            total = subtotal - descuento_monto
+            total = subtotal - discount_amount
 
-            txtSubTotal.value = (
+            subtotal_text.value = (
                 f"Sub Total: {subtotal:.2f} | "
-                f"Descuento: {descuento_monto:.2f} | "
+                f"Descuento: {discount_amount:.2f} | "
                 f"Total: {total:.2f}"
             )
 
         except (ValueError, TypeError):
-            txtSubTotal.value = "Sub Total"
+            subtotal_text.value = "Sub Total"
 
         page.update()
 
-    def save_input(e):
-
-        if producto_actual is None:
-            txtMensaje.value = "Producto no encontrado"
-            txtMensaje.color = "red"
+    def save_sale(e):
+        if current_product is None:
+            message_text.value = "Producto no encontrado"
+            message_text.color = "red"
             page.update()
             return
 
-        if producto_actual[5] <= 0:
-            txtMensaje.value = "El producto no tiene existencia"
-            txtMensaje.color = "red"
+        if current_product[5] <= 0:
+            message_text.value = "El producto no tiene existencia"
+            message_text.color = "red"
             page.update()
             return
 
-        if inpCantidad.value is None or inpCantidad.value == "":
-            inpCantidad.error_text = "Seleccione una cantidad"
+        if quantity_dropdown.value is None or quantity_dropdown.value == "":
+            quantity_dropdown.error_text = "Seleccione una cantidad"
             page.update()
             return
 
         try:
-            cantidad = int(inpCantidad.value)
+            quantity = int(quantity_dropdown.value)
 
-            if cantidad <= 0:
-                inpCantidad.error_text = "La cantidad debe ser mayor que cero"
+            if quantity <= 0:
+                quantity_dropdown.error_text = "La cantidad debe ser mayor que cero"
                 page.update()
                 return
 
         except ValueError:
-            inpCantidad.error_text = "Ingrese una cantidad valida"
+            quantity_dropdown.error_text = "Ingrese una cantidad valida"
             page.update()
             return
 
-        if cantidad > producto_actual[5]:
-            inpCantidad.error_text = (
-                f"Existencia disponible: {producto_actual[5]}"
+        if quantity > current_product[5]:
+            quantity_dropdown.error_text = (
+                f"Existencia disponible: {current_product[5]}"
             )
             page.update()
             return
 
         try:
-            precio = float(inpPrecio.value)
+            price = float(price_field.value)
 
-            if precio <= 0:
-                inpPrecio.error_text = "El precio debe ser mayor que cero"
+            if price <= 0:
+                price_field.error_text = "El precio debe ser mayor que cero"
                 page.update()
                 return
 
         except ValueError:
-            inpPrecio.error_text = "El precio no es valido"
+            price_field.error_text = "El precio no es valido"
             page.update()
             return
 
         try:
-            descuento = float(inpDescuento.value or 0)
+            discount = float(discount_field.value or 0)
 
-            if descuento < 0 or descuento > 100:
-                inpDescuento.error_text = (
+            if discount < 0 or discount > 100:
+                discount_field.error_text = (
                     "El descuento debe estar entre 0 y 100"
                 )
                 page.update()
                 return
 
         except ValueError:
-            inpDescuento.error_text = "Ingrese un descuento valido"
+            discount_field.error_text = "Ingrese un descuento valido"
             page.update()
             return
 
-        subtotal = cantidad * precio
+        subtotal = quantity * price
 
-        descuento_monto = subtotal * descuento / 100
+        discount_amount = subtotal * discount / 100
 
-        total = subtotal - descuento_monto
+        total = subtotal - discount_amount
 
         try:
             guardar_venta(
-                producto_actual[0],
-                producto_actual[1],
-                producto_actual[2],
-                cantidad,
-                precio,
+                current_product[0],
+                current_product[1],
+                current_product[2],
+                quantity,
+                price,
                 subtotal,
-                descuento,
+                discount,
                 total
             )
 
-            txtMensaje.value = "Venta guardada correctamente"
-            txtMensaje.color = "green"
+            message_text.value = "Venta guardada correctamente"
+            message_text.color = "green"
 
-            clear_input(None)
+            clear_form(None)
 
         except ValueError as error:
-            txtMensaje.value = str(error)
-            txtMensaje.color = "red"
+            message_text.value = str(error)
+            message_text.color = "red"
             page.update()
 
-    def clear_input(e):
-        nonlocal producto_actual
+    def clear_form(e):
+        nonlocal current_product
 
-        producto_actual = None
+        current_product = None
 
-        inpCodigo.value = ""
-        inpCantidad.value = ""
-        inpPrecio.value = ""
-        inpDescuento.value = ""
+        code_input.value = ""
+        quantity_dropdown.value = ""
+        price_field.value = ""
+        discount_field.value = ""
 
-        inpCodigo.error_text = None
-        inpCantidad.error_text = None
-        inpPrecio.error_text = None
-        inpDescuento.error_text = None
+        code_input.error_text = None
+        quantity_dropdown.error_text = None
+        price_field.error_text = None
+        discount_field.error_text = None
 
-        inpCantidad.options = []
+        quantity_dropdown.options = []
 
-        txtPrecio.value = "Precio"
-        txtSubTotal.value = "Sub Total"
-        txtMensaje.value = ""
+        price_text.value = "Precio"
+        subtotal_text.value = "Sub Total"
+        message_text.value = ""
 
         page.update()
 
@@ -212,22 +213,22 @@ def input_sale(page: ft.Page):
         from views.menu_interface import dash_board
         dash_board(page)
 
-    inpCodigo = ft.TextField(
+    code_input = ft.TextField(
         label="Código de Producto",
-        on_change=buscar_producto,
+        on_change=search_product,
         width=350,
         border_radius=10,
         prefix_icon=ft.Icons.BARCODE_READER
     )
 
-    inpCantidad = ft.Dropdown(
+    quantity_dropdown = ft.Dropdown(
         label="Cantidad",
-        on_select=calcular_total,
+        on_select=calculate_total,
         width=350,
         border_radius=10
     )
 
-    inpPrecio = ft.TextField(
+    price_field = ft.TextField(
         label="Precio Unitario",
         read_only=True,
         width=350,
@@ -235,35 +236,35 @@ def input_sale(page: ft.Page):
         prefix_icon=ft.Icons.ATTACH_MONEY
     )
 
-    txtPrecio = ft.Text("Precio", size=14, weight=ft.FontWeight.W_500)
-    txtSubTotal = ft.Text("Sub Total", size=16, weight=ft.FontWeight.BOLD, color=ft.Colors.GREEN_700)
-    txtMensaje = ft.Text("", size=14)
+    price_text = ft.Text("Precio", size=14, weight=ft.FontWeight.W_500)
+    subtotal_text = ft.Text("Sub Total", size=16, weight=ft.FontWeight.BOLD, color=ft.Colors.GREEN_700)
+    message_text = ft.Text("", size=14)
 
-    inpDescuento = ft.TextField(
+    discount_field = ft.TextField(
         label="Descuento (%)",
-        on_change=calcular_total,
+        on_change=calculate_total,
         width=350,
         border_radius=10,
         prefix_icon=ft.Icons.PERCENT
     )
 
-    btnGuardar = ft.Button(
+    save_button = ft.Button(
         "Guardar Venta",
-        on_click=save_input,
+        on_click=save_sale,
         icon=ft.Icons.SAVE,
         width=150,
         height=45
     )
 
-    btnLimpiar = ft.Button(
+    clear_button = ft.Button(
         "Limpiar",
-        on_click=clear_input,
+        on_click=clear_form,
         icon=ft.Icons.CLEAR_ALL,
         width=120,
         height=45
     )
 
-    btnCerrar = ft.Button(
+    close_button = ft.Button(
         "Cerrar",
         on_click=exit_window,
         icon=ft.Icons.ARROW_BACK,
@@ -279,13 +280,13 @@ def input_sale(page: ft.Page):
     form_card = ft.Card(
         content=ft.Container(
             content=ft.Column([
-                inpCodigo,
-                inpPrecio,
-                inpCantidad,
-                inpDescuento,
+                code_input,
+                price_field,
+                quantity_dropdown,
+                discount_field,
                 ft.Divider(),
-                txtSubTotal,
-                txtMensaje
+                subtotal_text,
+                message_text
             ], spacing=15, horizontal_alignment=ft.CrossAxisAlignment.CENTER),
             padding=25,
             width=450
@@ -293,7 +294,7 @@ def input_sale(page: ft.Page):
     )
 
     buttons_row = ft.Row(
-        controls=[btnGuardar, btnLimpiar, btnCerrar],
+        controls=[save_button, clear_button, close_button],
         alignment=ft.MainAxisAlignment.CENTER,
         spacing=15
     )
@@ -306,3 +307,4 @@ def input_sale(page: ft.Page):
         buttons_row
     )
     page.update()
+

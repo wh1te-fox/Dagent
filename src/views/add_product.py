@@ -1,10 +1,11 @@
+"""Product registration view module."""
 import flet as ft
 
 
 def main(page: ft.Page):
-    # --- Configuración de la página ---
-    from views.components.modelButton import Control_b
-    from views.components.model_textfield import InputModel
+    """Renders the product registration interface."""
+    from views.components.button import Control_b
+    from views.components.text_field import InputModel
     from services.database import guardar_producto as db_guardar_producto
 
     page.title = "Registrar Producto"
@@ -13,173 +14,157 @@ def main(page: ft.Page):
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.controls.clear()
 
-    # CAMPOS
-    codigo_input = InputModel("Código").entry_style()
-    codigo_input.width = 350
-    codigo_input.border_radius = 10
-    codigo_input.prefix_icon = ft.Icons.BARCODE_READER
+    code_input = InputModel("Código").entry_style()
+    code_input.width = 350
+    code_input.border_radius = 10
+    code_input.prefix_icon = ft.Icons.BARCODE_READER
 
-    nombre_input = InputModel("Nombre").entry_style()
-    nombre_input.width = 350
-    nombre_input.border_radius = 10
-    nombre_input.prefix_icon = ft.Icons.LABEL
+    name_input = InputModel("Nombre").entry_style()
+    name_input.width = 350
+    name_input.border_radius = 10
+    name_input.prefix_icon = ft.Icons.LABEL
 
-    categoria_input = InputModel("Categoría").entry_style()
-    categoria_input.width = 350
-    categoria_input.border_radius = 10
-    categoria_input.prefix_icon = ft.Icons.CATEGORY
+    category_input = InputModel("Categoría").entry_style()
+    category_input.width = 350
+    category_input.border_radius = 10
+    category_input.prefix_icon = ft.Icons.CATEGORY
 
-    precio_input = InputModel("Precio").entry_style()
-    precio_input.width = 350
-    precio_input.border_radius = 10
-    precio_input.prefix_icon = ft.Icons.ATTACH_MONEY
+    price_input = InputModel("Precio").entry_style()
+    price_input.width = 350
+    price_input.border_radius = 10
+    price_input.prefix_icon = ft.Icons.ATTACH_MONEY
 
     stock_input = InputModel("Stock").entry_style()
     stock_input.width = 350
     stock_input.border_radius = 10
     stock_input.prefix_icon = ft.Icons.INVENTORY
 
-    # Mensaje general
-    txtMensaje = ft.Text(
+    message_text = ft.Text(
         "",
         size=16
     )
 
-    # LIMPIAR CAMPOS
     def clear_input(e):
-        codigo_input.value = ""
-        nombre_input.value = ""
-        categoria_input.value = ""
-        precio_input.value = ""
+        code_input.value = ""
+        name_input.value = ""
+        category_input.value = ""
+        price_input.value = ""
         stock_input.value = ""
 
-        codigo_input.error_text = None
-        nombre_input.error_text = None
-        categoria_input.error_text = None
-        precio_input.error_text = None
+        code_input.error_text = None
+        name_input.error_text = None
+        category_input.error_text = None
+        price_input.error_text = None
         stock_input.error_text = None
 
         page.update()
 
-    # GUARDAR PRODUCTO
     def guardar_producto(p):
-        codigo = codigo_input.value.strip() if codigo_input.value else ""
-        nombre = nombre_input.value.strip() if nombre_input.value else ""
-        categoria = categoria_input.value.strip() if categoria_input.value else ""
-        precio = precio_input.value.strip() if precio_input.value else ""
-        existencia = stock_input.value.strip() if stock_input.value else ""
+        code = code_input.value.strip() if code_input.value else ""
+        name = name_input.value.strip() if name_input.value else ""
+        category = category_input.value.strip() if category_input.value else ""
+        price = price_input.value.strip() if price_input.value else ""
+        stock = stock_input.value.strip() if stock_input.value else ""
 
-        # Limpiar errores anteriores
-        codigo_input.error_text = None
-        nombre_input.error_text = None
-        categoria_input.error_text = None
-        precio_input.error_text = None
+        code_input.error_text = None
+        name_input.error_text = None
+        category_input.error_text = None
+        price_input.error_text = None
         stock_input.error_text = None
 
-        # Limpiar mensaje general
-        txtMensaje.value = ""
-        txtMensaje.color = None
+        message_text.value = ""
+        message_text.color = None
 
-        # VALIDAR CÓDIGO
-        if codigo == "":
-            codigo_input.error_text = "El código es obligatorio"
-            txtMensaje.value = "No se guardó el producto"
-            txtMensaje.color = "red"
+        if code == "":
+            code_input.error_text = "El código es obligatorio"
+            message_text.value = "No se guardó el producto"
+            message_text.color = "red"
             page.update()
             return
 
-        # VALIDAR NOMBRE
-        if nombre == "":
-            nombre_input.error_text = "El nombre es obligatorio"
-            txtMensaje.value = "No se guardó el producto"
-            txtMensaje.color = "red"
+        if name == "":
+            name_input.error_text = "El nombre es obligatorio"
+            message_text.value = "No se guardó el producto"
+            message_text.color = "red"
             page.update()
             return
 
-        # VALIDAR CATEGORÍA
-        if categoria == "":
-            categoria_input.error_text = "La categoría es obligatoria"
-            txtMensaje.value = "No se guardó el producto"
-            txtMensaje.color = "red"
+        if category == "":
+            category_input.error_text = "La categoría es obligatoria"
+            message_text.value = "No se guardó el producto"
+            message_text.color = "red"
             page.update()
             return
 
-        # VALIDAR PRECIO
         try:
-            precio_val = float(precio)
-            if precio_val <= 0:
-                precio_input.error_text = "El precio debe ser mayor que cero"
-                txtMensaje.value = "No se guardó el producto"
-                txtMensaje.color = "red"
+            price_val = float(price)
+            if price_val <= 0:
+                price_input.error_text = "El precio debe ser mayor que cero"
+                message_text.value = "No se guardó el producto"
+                message_text.color = "red"
                 page.update()
                 return
         except ValueError:
-            precio_input.error_text = "Ingrese un precio válido"
-            txtMensaje.value = "No se guardó el producto"
-            txtMensaje.color = "red"
+            price_input.error_text = "Ingrese un precio válido"
+            message_text.value = "No se guardó el producto"
+            message_text.color = "red"
             page.update()
             return
 
-        # VALIDAR EXISTENCIA
         try:
-            existencia_val = int(existencia)
-            if existencia_val < 0:
+            stock_val = int(stock)
+            if stock_val < 0:
                 stock_input.error_text = "La existencia no puede ser negativa"
-                txtMensaje.value = "No se guardó el producto"
-                txtMensaje.color = "red"
+                message_text.value = "No se guardó el producto"
+                message_text.color = "red"
                 page.update()
                 return
         except ValueError:
             stock_input.error_text = "Ingrese una existencia válida"
-            txtMensaje.value = "No se guardó el producto"
-            txtMensaje.color = "red"
+            message_text.value = "No se guardó el producto"
+            message_text.color = "red"
             page.update()
             return
 
-        # GUARDAR
         try:
             db_guardar_producto(
-                codigo,
-                nombre,
-                categoria,
-                precio_val,
-                existencia_val
+                code,
+                name,
+                category,
+                price_val,
+                stock_val
             )
 
-            # Mensaje de confirmación
-            txtMensaje.value = "Producto guardado correctamente"
-            txtMensaje.color = "green"
+            message_text.value = "Producto guardado correctamente"
+            message_text.color = "green"
 
-            # Limpiar campos
-            codigo_input.value = ""
-            nombre_input.value = ""
-            categoria_input.value = ""
-            precio_input.value = ""
+            code_input.value = ""
+            name_input.value = ""
+            category_input.value = ""
+            price_input.value = ""
             stock_input.value = ""
 
             page.update()
 
         except ValueError as error:
-            codigo_input.error_text = str(error)
-            txtMensaje.value = "No se guardó el producto"
-            txtMensaje.color = "red"
+            code_input.error_text = str(error)
+            message_text.value = "No se guardó el producto"
+            message_text.color = "red"
             page.update()
 
-    # CANCELAR
-    def cancelar(p):
+    def cancel_click(p):
         from views.menu_interface import dash_board
         dash_board(p)
 
-    # BOTONES
-    guardar_btn = Control_b(
+    save_btn = Control_b(
         "Guardar",
         guardar_producto,
         page
     ).view()
 
-    cancelar_btn = Control_b(
+    cancel_btn = Control_b(
         "Cancelar",
-        cancelar,
+        cancel_click,
         page
     ).view()
 
@@ -191,13 +176,13 @@ def main(page: ft.Page):
     form_card = ft.Card(
         content=ft.Container(
             content=ft.Column([
-                codigo_input,
-                nombre_input,
-                categoria_input,
-                precio_input,
+                code_input,
+                name_input,
+                category_input,
+                price_input,
                 stock_input,
                 ft.Divider(),
-                txtMensaje
+                message_text
             ], spacing=15, horizontal_alignment=ft.CrossAxisAlignment.CENTER),
             padding=25,
             width=450
@@ -205,7 +190,7 @@ def main(page: ft.Page):
     )
 
     buttons_row = ft.Row(
-        controls=[guardar_btn, cancelar_btn],
+        controls=[save_btn, cancel_btn],
         alignment=ft.MainAxisAlignment.CENTER,
         spacing=20
     )
@@ -219,3 +204,4 @@ def main(page: ft.Page):
     )
 
     page.update()
+
