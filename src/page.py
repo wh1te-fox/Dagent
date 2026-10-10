@@ -1,7 +1,9 @@
+"""Main application entry point module."""
 import flet as ft 
 
-# Ventana normal
+
 def main(page: ft.Page):
+    """Renders the home/welcome view of the application."""
     page.title = "Dagent - Bienvenido"
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
@@ -52,6 +54,5 @@ def main(page: ft.Page):
     page.add(welcome_card)
     page.update()
     
-if __name__ == "__main__": # solo ejecutara si estas en page.py
+if __name__ == "__main__":
     ft.run(main)
-    

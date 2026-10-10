@@ -8,7 +8,7 @@ def dash_board(page: ft.Page):
     from page import main as profile_view
     from views.add_client import customer_page
     from views.add_product import main as add_product_view
-    from views.FrmReporte import list_report
+    from views.report_view import list_report
     from views.page_sale import input_sale
     from views.search_client import search as search_client_view
     from views.components.model_navrail import NavigationBar
