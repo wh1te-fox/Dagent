@@ -18,37 +18,37 @@ class NavigationBar:
             on_change=self.on_change,
             destinations=[
                 self.element_destination(
-                    "Profile",
+                    "Perfil",
                     ft.Icons.ACCOUNT_CIRCLE_OUTLINED,
                     ft.Icons.ACCOUNT_CIRCLE,
                 ),
                 self.element_destination(
-                    "Sales",
+                    "Realizar Venta",
                     ft.Icons.SHOPPING_CART_OUTLINED,
                     ft.Icons.SHOPPING_CART_ROUNDED
                 ),
                 self.element_destination(
-                    "Add Product",
+                    "Registrar Producto",
                     ft.Icons.ADD_CIRCLE_OUTLINE,
                     ft.Icons.ADD_CIRCLE_OUTLINED
                 ),
                 self.element_destination(
-                    "Add Client",
+                    "Registrar Cliente",
                     ft.Icons.PERSON_ADD_ALT,
                     ft.Icons.PERSON_ADD_ALT_SHARP
                 ),
                 self.element_destination(
-                    "Search Clients",
+                    "Buscar Clientes",
                     ft.Icons.PERSON_SEARCH_OUTLINED,
                     ft.Icons.PERSON_SEARCH_ROUNDED
                 ),
                 self.element_destination(
-                    "Reports",
+                    "Reportes",
                     ft.Icons.ASSESSMENT_OUTLINED,
                     ft.Icons.ASSESSMENT
                 ),
                 self.element_destination(
-                    "Settings",
+                    "Configuración",
                     ft.Icons.SETTINGS_OUTLINED,
                     ft.Icons.SETTINGS
                 ),
