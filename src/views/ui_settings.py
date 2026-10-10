@@ -1,15 +1,17 @@
-"""Settings view module for application configuration."""
 import flet as ft
 from views.menu_interface import dash_board
+    
 
-
+# Settings Page
 def dark_mode(page: ft.Page):
-    """Renders the settings view for theme configuration and appearance."""
+
     page.controls.clear()
     page.title = "Configuraciones"
     page.padding = 30
     page.vertical_alignment = ft.MainAxisAlignment.START
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+    page.scroll = ft.ScrollMode.AUTO
+
 
     def theme_changed(e):
         page.theme_mode = (
@@ -19,10 +21,12 @@ def dark_mode(page: ft.Page):
         )
         page.update()    
 
-    theme_switch = ft.Switch( 
+    #page.theme_mode = ft.ThemeMode.DARK
+
+    theme_swith = ft.Switch( 
         label_position=ft.LabelPosition.LEFT, 
         on_change=theme_changed
-    )
+        )
 
     settings_card = ft.Card(
         content=ft.Container(
@@ -34,7 +38,7 @@ def dark_mode(page: ft.Page):
                 ft.Divider(),
                 ft.Row([
                     ft.Text("Cambiar entre modo claro y oscuro", size=14),
-                    theme_switch
+                    theme_swith
                 ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN)
             ], spacing=15),
             padding=25,
@@ -42,7 +46,7 @@ def dark_mode(page: ft.Page):
         )
     )
 
-    back_button = ft.Button(
+    btn = ft.Button(
         content=ft.Row([ft.Icon(ft.Icons.ARROW_BACK, size=18), ft.Text("Volver")], alignment=ft.MainAxisAlignment.CENTER, spacing=5),
         on_click=lambda _: dash_board(page),
         width=160,
@@ -58,6 +62,6 @@ def dark_mode(page: ft.Page):
         ft.Divider(height=40, color=ft.Colors.TRANSPARENT),
         settings_card,
         ft.Divider(height=30, color=ft.Colors.TRANSPARENT),
-        back_button
+        btn
     )
     page.update()
