@@ -137,6 +137,12 @@ def guardar_venta(
     conn = conectar()
     cursor = conn.cursor()
 
+    cursor.execute("SELECT existencia FROM productos WHERE id = ?", (producto_id,))
+    row = cursor.fetchone()
+    if not row or row[0] < cantidad:
+        conn.close()
+        raise ValueError("Stock insuficiente para realizar la venta")
+
     cursor.execute("""
         INSERT INTO ventas (
             producto_id,
