@@ -46,6 +46,61 @@ def dark_mode(page: ft.Page):
         )
     )
 
+    # Test cards for verifying scroll functionality
+    test_card_1 = ft.Card(
+        content=ft.Container(
+            content=ft.Column([
+                ft.Row([
+                    ft.Icon(ft.Icons.NOTIFICATIONS_OUTLINED, size=24, color=ft.Colors.GREEN_400),
+                    ft.Text("Notificaciones (Prueba)", size=18, weight=ft.FontWeight.BOLD)
+                ], spacing=10),
+                ft.Divider(),
+                ft.Row([
+                    ft.Text("Activar notificaciones push", size=14),
+                    ft.Switch(value=True)
+                ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN)
+            ], spacing=15),
+            padding=25,
+            width=450
+        )
+    )
+
+    test_card_2 = ft.Card(
+        content=ft.Container(
+            content=ft.Column([
+                ft.Row([
+                    ft.Icon(ft.Icons.LANGUAGE, size=24, color=ft.Colors.ORANGE_400),
+                    ft.Text("Idioma (Prueba)", size=18, weight=ft.FontWeight.BOLD)
+                ], spacing=10),
+                ft.Divider(),
+                ft.Row([
+                    ft.Text("Idioma del sistema", size=14),
+                    ft.Text("Español", weight=ft.FontWeight.BOLD)
+                ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN)
+            ], spacing=15),
+            padding=25,
+            width=450
+        )
+    )
+
+    test_card_3 = ft.Card(
+        content=ft.Container(
+            content=ft.Column([
+                ft.Row([
+                    ft.Icon(ft.Icons.STORAGE, size=24, color=ft.Colors.PURPLE_400),
+                    ft.Text("Almacenamiento (Prueba)", size=18, weight=ft.FontWeight.BOLD)
+                ], spacing=10),
+                ft.Divider(),
+                ft.Row([
+                    ft.Text("Limpiar caché de la aplicación", size=14),
+                    ft.Button("Limpiar")
+                ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN)
+            ], spacing=15),
+            padding=25,
+            width=450
+        )
+    )
+
     btn = ft.Button(
         content=ft.Row([ft.Icon(ft.Icons.ARROW_BACK, size=18), ft.Text("Volver")], alignment=ft.MainAxisAlignment.CENTER, spacing=5),
         on_click=lambda _: dash_board(page),
@@ -61,6 +116,12 @@ def dark_mode(page: ft.Page):
         header_row,
         ft.Divider(height=40, color=ft.Colors.TRANSPARENT),
         settings_card,
+        ft.Divider(height=20, color=ft.Colors.TRANSPARENT),
+        test_card_1,
+        ft.Divider(height=20, color=ft.Colors.TRANSPARENT),
+        test_card_2,
+        ft.Divider(height=20, color=ft.Colors.TRANSPARENT),
+        test_card_3,
         ft.Divider(height=30, color=ft.Colors.TRANSPARENT),
         btn
     )
