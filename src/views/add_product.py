@@ -6,7 +6,7 @@ def main(page: ft.Page):
     """Renders the product registration interface."""
     from views.components.button import Control_b
     from views.components.text_field import InputModel
-    from services.database import guardar_producto as db_guardar_producto
+    from services.database import guardar_producto as db_guardar_producto, obtener_producto_por_codigo
 
     page.title = "Registrar Producto"
     page.padding = 30
@@ -18,6 +18,27 @@ def main(page: ft.Page):
     code_input.width = 350
     code_input.border_radius = 10
     code_input.prefix_icon = ft.Icons.BARCODE_READER
+
+    def validate_code(e):
+        code = code_input.value.strip() if code_input.value else ""
+        if code == "":
+            code_input.error_text = None
+            message_text.value = ""
+            page.update()
+            return
+
+        product = obtener_producto_por_codigo(code)
+        if product:
+            code_input.error_text = "El código de producto ya existe"
+            message_text.value = "El producto ya existe en el sistema"
+            message_text.color = "red"
+        else:
+            code_input.error_text = None
+            message_text.value = "Código disponible"
+            message_text.color = "green"
+        page.update()
+
+    code_input.on_change = validate_code
 
     name_input = InputModel("Nombre").entry_style()
     name_input.width = 350
@@ -91,6 +112,13 @@ def main(page: ft.Page):
 
         if category == "":
             category_input.error_text = "La categoría es obligatoria"
+            message_text.value = "No se guardó el producto"
+            message_text.color = "red"
+            page.update()
+            return
+
+        if obtener_producto_por_codigo(code):
+            code_input.error_text = "El código de producto ya existe"
             message_text.value = "No se guardó el producto"
             message_text.color = "red"
             page.update()
