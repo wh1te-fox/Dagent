@@ -68,16 +68,12 @@ def credits_page(page: ft.Page):
                 abono_input.error_text = str(error)
                 page.update()
 
-        abono_input = section.input("Monto a abonar", width=200)
-
         def build_edit_mode(e=None):
             abono_input.error_text = None
             abono_input.label = f"Monto a abonar (Saldo: ${saldo:.2f})"
             card_container.content = ft.Column([
-                ft.Row([
-                    ft.Text(f"Crédito de {cliente} - Saldo: ${saldo:.2f}", size=13, color=ft.Colors.GREY_700),
-                ], alignment=ft.MainAxisAlignment.END),
-                ft.Row([abono_input], alignment=ft.MainAxisAlignment.END),
+                ft.Text(f"Crédito de {cliente} - Saldo: ${saldo:.2f}", size=13, color=ft.Colors.GREY_700),
+                ft.Row([abono_input], alignment=ft.MainAxisAlignment.CENTER),
                 ft.Row([
                     section.primary_button(ft.Button("Guardar", on_click=save_click, icon=ft.Icons.SAVE)),
                     section.secondary_button(ft.Button("Cancelar", on_click=lambda e: build_view_mode(), icon=ft.Icons.CANCEL)),
@@ -112,7 +108,7 @@ def credits_page(page: ft.Page):
                 ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
             ]
             if actions:
-                info.append(section.buttons_row(actions))
+                info.append(ft.Row(actions, alignment=ft.MainAxisAlignment.END, spacing=10))
             card_container.content = ft.Column(info, spacing=8)
 
         build_view_mode()
@@ -169,7 +165,17 @@ def credits_page(page: ft.Page):
         section.spacer(16),
         summary_row,
         section.spacer(16),
-        section.buttons_row([btn_nuevo, btn_close, search_field]),
+        ft.Row(
+            [
+                ft.Row([btn_nuevo, btn_close], spacing=15, wrap=True, run_spacing=10),
+                search_field,
+            ],
+            alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+            vertical_alignment=ft.CrossAxisAlignment.CENTER,
+            run_spacing=10,
+            wrap=True,
+            expand=True,
+        ),
         section.spacer(10),
         message_text,
         section.spacer(10),
