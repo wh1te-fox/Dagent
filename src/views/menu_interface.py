@@ -3,48 +3,33 @@ import flet as ft
 
 
 def dash_board(page: ft.Page):
-    """Renders the dashboard interface with navigation rail and dynamic view loading."""
+    """Builds the application shell (sidebar + content) and opens the dashboard."""
     from services.database import crear_bd
-    from page import main as profile_view
-    from views.add_client import customer_page
-    from views.add_credit import credit_page
-    from views.add_product import main as add_product_view
-    from views.inventory_view import inventory_page
-    from views.report_view import list_report
-    from views.page_sale import input_sale
-    from views.search_client import search as search_client_view
-    from views.components.navigation_rail import NavigationBar
-    from views.ui_settings import dark_mode
+    from views.layouts.app_layout import AppLayout
+
+    # Validation: if the app shell is already mounted (e.g. a view calls
+    # dash_board to "go back"), do not rebuild the layout - that would nest a
+    # shell inside the content area and create an infinite navigation loop.
+    existing_layout = getattr(page, "_app_layout", None)
+    if existing_layout is not None:
+        existing_layout.open_section("dashboard")
+        return
 
     page.title = "Dagent"
     page.vertical_alignment = ft.MainAxisAlignment.START
+    page.horizontal_alignment = ft.CrossAxisAlignment.START
+    page.padding = 0
     page.controls.clear()
     crear_bd()
 
-    def on_change(e):
-        index = e.control.selected_index
-        print(f"Selected destination: {index}")
+    layout = AppLayout(page)
+    page.add(layout.build())
+    layout.open_section("dashboard")
+    page.update()
 
-        page.controls.clear()
-        page.update()
 
-        execute_function = {
-            0: profile_view,
-            1: input_sale,
-            2: add_product_view,
-            3: inventory_page,
-            4: customer_page,
-            5: search_client_view,
-            6: credit_page,
-            7: list_report,
-            8: dark_mode,
-        }
+if __name__ == "__main__":
+    def _run(page: ft.Page):
+        dash_board(page)
 
-        func = execute_function.get(index)
-        if func:
-            func(page)
-        else:
-            print(f"No function assigned for index {index}")
-
-    nav = NavigationBar(on_change=on_change)
-    page.add(nav.build())
+    ft.run(_run)
