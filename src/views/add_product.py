@@ -5,14 +5,11 @@ import flet as ft
 def main(page: ft.Page):
     """Renders the product registration interface."""
     from views.components.button import Control_b
+    from views.components import section
     from views.components.text_field import InputModel
     from services.database import guardar_producto as db_guardar_producto, obtener_producto_por_codigo
 
-    page.title = "Registrar Producto"
-    page.padding = 30
-    page.vertical_alignment = ft.MainAxisAlignment.START
-    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
-    page.controls.clear()
+    section.setup(page, "Registrar Producto")
 
     code_input = InputModel("Código").entry_style()
     code_input.width = 350
@@ -184,37 +181,37 @@ def main(page: ft.Page):
         from views.menu_interface import dash_board
         dash_board(p)
 
-    save_btn = Control_b(
-        "Guardar",
-        guardar_producto,
-        page
-    ).view()
+    save_btn = section.primary_button(
+        Control_b(
+            "Guardar",
+            guardar_producto,
+            page,
+            icon=ft.Icons.SAVE
+        ).view()
+    )
 
-    cancel_btn = Control_b(
-        "Cancelar",
-        cancel_click,
-        page
-    ).view()
+    cancel_btn = section.secondary_button(
+        Control_b(
+            "Cancelar",
+            cancel_click,
+            page,
+            icon=ft.Icons.CANCEL
+        ).view()
+    )
 
-    header_row = ft.Row([
-        ft.Icon(ft.Icons.INVENTORY_2, size=32, color=ft.Colors.BLUE),
-        ft.Text("Registrar Producto", size=30, weight=ft.FontWeight.W_900, selectable=True)
-    ], alignment=ft.MainAxisAlignment.CENTER, spacing=15)
+    header_row = section.header(ft.Icons.INVENTORY_2, "Registrar Producto", "Da de alta productos en el catálogo")
 
-    form_card = ft.Card(
-        content=ft.Container(
-            content=ft.Column([
-                code_input,
-                name_input,
-                category_input,
-                price_input,
-                stock_input,
-                ft.Divider(),
-                message_text
-            ], spacing=15, horizontal_alignment=ft.CrossAxisAlignment.CENTER),
-            padding=25,
-            width=450
-        )
+    form_card = section.card(
+        ft.Column([
+            code_input,
+            name_input,
+            category_input,
+            price_input,
+            stock_input,
+            ft.Divider(),
+            message_text
+        ], spacing=15, horizontal_alignment=ft.CrossAxisAlignment.CENTER),
+        width=section.FORM_WIDTH
     )
 
     buttons_row = ft.Row(
@@ -225,9 +222,9 @@ def main(page: ft.Page):
 
     page.add(
         header_row,
-        ft.Divider(height=20, color=ft.Colors.TRANSPARENT),
+        section.spacer(20),
         form_card,
-        ft.Divider(height=20, color=ft.Colors.TRANSPARENT),
+        section.spacer(16),
         buttons_row
     )
 
