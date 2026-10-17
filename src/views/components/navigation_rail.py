@@ -49,6 +49,11 @@ class NavigationBar:
                     ft.Icons.PERSON_SEARCH_ROUNDED
                 ),
                 self.element_destination(
+                    "Registrar Crédito",
+                    ft.Icons.CREDIT_CARD_OUTLINED,
+                    ft.Icons.CREDIT_CARD
+                ),
+                self.element_destination(
                     "Reportes",
                     ft.Icons.ASSESSMENT_OUTLINED,
                     ft.Icons.ASSESSMENT
