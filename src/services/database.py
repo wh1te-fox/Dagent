@@ -49,6 +49,18 @@ def crear_bd():
         )
     """)
 
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS creditos (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            cliente_id INTEGER,
+            monto REAL NOT NULL,
+            descripcion TEXT,
+            fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (cliente_id)
+                REFERENCES clientes(id)
+        )
+    """)
+
     conn.commit()
     conn.close()
 
@@ -344,3 +356,35 @@ def actualizar_cliente(id, nombre, apellido):
     """, (nombre, apellido, id))
     conn.commit()
     conn.close()
+
+
+def guardar_credito(cliente_id, monto, descripcion):
+    conn = conectar()
+    cursor = conn.cursor()
+    cursor.execute("""
+        INSERT INTO creditos (cliente_id, monto, descripcion)
+        VALUES (?, ?, ?)
+    """, (cliente_id, monto, descripcion))
+    conn.commit()
+    conn.close()
+
+
+def obtener_creditos():
+    conn = conectar()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT
+            c.id,
+            c.cliente_id,
+            cli.nombre,
+            cli.apellido,
+            c.monto,
+            c.descripcion,
+            c.fecha
+        FROM creditos c
+        LEFT JOIN clientes cli ON c.cliente_id = cli.id
+        ORDER BY c.id DESC
+    """)
+    creditos = cursor.fetchall()
+    conn.close()
+    return creditos
