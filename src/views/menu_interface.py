@@ -8,6 +8,7 @@ def dash_board(page: ft.Page):
     from page import main as profile_view
     from views.add_client import customer_page
     from views.add_product import main as add_product_view
+    from views.inventory_view import inventory_page
     from views.report_view import list_report
     from views.page_sale import input_sale
     from views.search_client import search as search_client_view
@@ -30,10 +31,11 @@ def dash_board(page: ft.Page):
             0: profile_view,
             1: input_sale,
             2: add_product_view,
-            3: customer_page,
-            4: search_client_view,
-            5: list_report,
-            6: dark_mode,
+            3: inventory_page,
+            4: customer_page,
+            5: search_client_view,
+            6: list_report,
+            7: dark_mode,
         }
 
         func = execute_function.get(index)
