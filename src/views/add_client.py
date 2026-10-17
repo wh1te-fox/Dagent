@@ -25,6 +25,25 @@ def customer_page(page: ft.Page):
     last_name_input.border_radius = 10
     last_name_input.prefix_icon = ft.Icons.PERSON_OUTLINE
 
+    def validate_client(e):
+        first_name = name_input.value.strip() if name_input.value else ""
+        last_name = last_name_input.value.strip() if last_name_input.value else ""
+        if not first_name and not last_name:
+            message_text.value = ""
+            page.update()
+            return
+
+        if first_name and last_name and cliente_existe(first_name, last_name):
+            message_text.value = "El cliente ya existe en el sistema"
+            message_text.color = "red"
+        elif first_name or last_name:
+            message_text.value = "Cliente disponible para registrar"
+            message_text.color = "green"
+        page.update()
+
+    name_input.on_change = validate_client
+    last_name_input.on_change = validate_client
+
     message_text = ft.Text("", size=16)
 
     def save_client_click(p):

@@ -33,7 +33,6 @@ def search(page: ft.Page):
     last_name_field.width = 200
 
     message_text = ft.Text("", size=16)
-    edit_switch = ft.Switch(label="Modo Edición", value=False, on_change=lambda _: perform_search())
     results_column = ft.Column(scroll=ft.ScrollMode.AUTO, height=320, width=600, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
 
     def perform_search(e=None):
@@ -60,58 +59,68 @@ def search(page: ft.Page):
             message_text.value = f"Se encontraron {len(clients)} cliente(s)"
             message_text.color = "green"
             for cli in clients:
-                if not edit_switch.value:
-                    results_column.controls.append(
-                        ft.Card(
-                            content=ft.Container(
-                                content=ft.Column([
-                                    ft.Row([
-                                        ft.Icon(ft.Icons.PERSON, color=ft.Colors.BLUE_400),
-                                        ft.Text(f"{cli[1]} {cli[2]}", weight=ft.FontWeight.BOLD, size=16)
-                                    ], spacing=10),
-                                    ft.Text(f"ID del Cliente: {cli[0]}", size=12, color=ft.Colors.GREY_700)
-                                ], spacing=5),
-                                padding=15
-                            ),
-                            width=500
-                        )
-                    )
-                else:
-                    client_id = cli[0]
-                    tf_nombre = ft.TextField(value=cli[1], label="Nombre", width=170)
-                    tf_apellido = ft.TextField(value=cli[2], label="Apellido", width=170)
+                client_id = cli[0]
+                initial_nombre = cli[1]
+                initial_apellido = cli[2]
 
-                    def make_update_handler(cid, tn, ta):
-                        def update_click(e):
-                            n = tn.value.strip() if tn.value else ""
-                            a = ta.value.strip() if ta.value else ""
+                card_container = ft.Container(padding=15, width=550)
+
+                def make_card_handlers(cid, nom, ape, container):
+                    def build_view_mode():
+                        def on_edit_click(e):
+                            build_edit_mode()
+
+                        container.content = ft.Column([
+                            ft.Row([
+                                ft.Row([
+                                    ft.Icon(ft.Icons.PERSON, color=ft.Colors.BLUE_400),
+                                    ft.Text(f"{nom} {ape}", weight=ft.FontWeight.BOLD, size=16)
+                                ], spacing=10),
+                                ft.IconButton(icon=ft.Icons.EDIT, tooltip="Editar", on_click=on_edit_click)
+                            ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
+                            ft.Text(f"ID del Cliente: {cid}", size=12, color=ft.Colors.GREY_700)
+                        ], spacing=5)
+                        page.update()
+
+                    def build_edit_mode():
+                        tf_nombre = ft.TextField(value=nom, label="Nombre", width=170)
+                        tf_apellido = ft.TextField(value=ape, label="Apellido", width=170)
+
+                        def save_click(e):
+                            n = tf_nombre.value.strip() if tf_nombre.value else ""
+                            a = tf_apellido.value.strip() if tf_apellido.value else ""
                             if n and a:
                                 actualizar_cliente(cid, n, a)
                                 message_text.value = f"Cliente ID {cid} actualizado correctamente"
                                 message_text.color = "green"
-                                page.update()
+                                perform_search()
                             else:
                                 message_text.value = "Nombre y apellido son obligatorios para actualizar"
                                 message_text.color = "red"
                                 page.update()
-                        return update_click
 
-                    btn_actualizar = ft.Button("Actualizar", on_click=make_update_handler(client_id, tf_nombre, tf_apellido), icon=ft.Icons.SAVE)
+                        def cancel_click(e):
+                            build_view_mode()
 
-                    results_column.controls.append(
-                        ft.Card(
-                            content=ft.Container(
-                                content=ft.Column([
-                                    ft.Text(f"ID: {client_id}", size=12, color=ft.Colors.GREY_700),
-                                    ft.Row([tf_nombre, tf_apellido, btn_actualizar], alignment=ft.MainAxisAlignment.SPACE_BETWEEN, spacing=10)
-                                ], spacing=8),
-                                padding=15
-                            ),
-                            width=550
-                        )
-                    )
+                        btn_guardar = ft.Button("Guardar", on_click=save_click, icon=ft.Icons.SAVE)
+                        btn_cancelar = ft.Button("Cancelar", on_click=cancel_click, icon=ft.Icons.CANCEL)
+
+                        container.content = ft.Column([
+                            ft.Text(f"ID: {cid}", size=12, color=ft.Colors.GREY_700),
+                            ft.Row([tf_nombre, tf_apellido], alignment=ft.MainAxisAlignment.CENTER, spacing=8),
+                            ft.Row([btn_guardar, btn_cancelar], alignment=ft.MainAxisAlignment.END, spacing=10)
+                        ], spacing=8)
+                        page.update()
+
+                    build_view_mode()
+
+                make_card_handlers(client_id, initial_nombre, initial_apellido, card_container)
+                results_column.controls.append(ft.Card(content=card_container))
 
         page.update()
+
+    first_name_field.on_change = perform_search
+    last_name_field.on_change = perform_search
 
     def exit_window(e):
         dash_board(page)
@@ -137,7 +146,6 @@ def search(page: ft.Page):
         ft.Divider(height=20, color=ft.Colors.TRANSPARENT),
         search_inputs_row,
         ft.Divider(height=10, color=ft.Colors.TRANSPARENT),
-        edit_switch,
         message_text,
         ft.Divider(height=10, color=ft.Colors.TRANSPARENT),
         results_column
