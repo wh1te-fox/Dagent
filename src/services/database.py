@@ -124,6 +124,45 @@ def obtener_productos():
     return productos
 
 
+def buscar_productos(termino=""):
+    conn = conectar()
+    cursor = conn.cursor()
+
+    query = """
+        SELECT
+            id,
+            codigo,
+            nombre,
+            categoria,
+            precio,
+            existencia
+        FROM productos
+        WHERE codigo LIKE ? OR nombre LIKE ? OR categoria LIKE ?
+        ORDER BY nombre
+    """
+    param = f"%{termino}%"
+    cursor.execute(query, (param, param, param))
+    productos = cursor.fetchall()
+
+    conn.close()
+
+    return productos
+
+
+def actualizar_producto_stock(producto_id, existencia):
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        UPDATE productos
+        SET existencia = ?
+        WHERE id = ?
+    """, (existencia, producto_id))
+
+    conn.commit()
+    conn.close()
+
+
 def guardar_venta(
     producto_id,
     codigo,
@@ -136,6 +175,12 @@ def guardar_venta(
 ):
     conn = conectar()
     cursor = conn.cursor()
+
+    cursor.execute("SELECT existencia FROM productos WHERE id = ?", (producto_id,))
+    row = cursor.fetchone()
+    if not row or row[0] < cantidad:
+        conn.close()
+        raise ValueError("Stock insuficiente para realizar la venta")
 
     cursor.execute("""
         INSERT INTO ventas (
@@ -170,11 +215,11 @@ def guardar_venta(
     conn.close()
 
 
-def obtener_ventas():
+def obtener_ventas(filtro="todos", valor=None, valor_hasta=None):
     conn = conectar()
     cursor = conn.cursor()
 
-    cursor.execute("""
+    query = """
         SELECT
             codigo,
             producto,
@@ -185,9 +230,24 @@ def obtener_ventas():
             total,
             fecha
         FROM ventas
-        ORDER BY id DESC
-    """)
+        WHERE 1=1
+    """
+    params = []
 
+    if filtro == "fecha" and valor:
+        query += " AND DATE(fecha) = ?"
+        params.append(valor)
+    elif filtro == "personalizada" and valor and valor_hasta:
+        query += " AND DATE(fecha) BETWEEN ? AND ?"
+        params.extend([valor, valor_hasta])
+    elif filtro == "semana":
+        query += " AND fecha >= datetime('now', '-7 days')"
+    elif filtro == "mes":
+        query += " AND strftime('%Y-%m', fecha) = strftime('%Y-%m', 'now')"
+
+    query += " ORDER BY id DESC"
+
+    cursor.execute(query, params)
     ventas = cursor.fetchall()
 
     conn.close()

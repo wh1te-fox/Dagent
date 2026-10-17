@@ -10,6 +10,7 @@ class NavigationBar:
     def build(self):
         return ft.NavigationRail(
             selected_index=0,
+            extended=True,
             label_type=ft.NavigationRailLabelType.ALL,
             min_width=100,
             min_extended_width=200,
@@ -31,6 +32,11 @@ class NavigationBar:
                     "Registrar Producto",
                     ft.Icons.ADD_CIRCLE_OUTLINE,
                     ft.Icons.ADD_CIRCLE_OUTLINED
+                ),
+                self.element_destination(
+                    "Inventario",
+                    ft.Icons.INVENTORY_2_OUTLINED,
+                    ft.Icons.INVENTORY_2
                 ),
                 self.element_destination(
                     "Registrar Cliente",
