@@ -6,6 +6,8 @@ from views.components import section
 
 def dark_mode(page: ft.Page):
     """Renders the settings view for theme configuration and appearance."""
+    from services.database import guardar_config, obtener_config
+
     section.setup(page, "Configuración")
 
     def theme_changed(e):
@@ -21,6 +23,15 @@ def dark_mode(page: ft.Page):
         on_change=theme_changed
     )
 
+    def discount_changed(e):
+        guardar_config("descuento_habilitado", "1" if e.control.value else "0")
+
+    discount_switch = ft.Switch(
+        value=obtener_config("descuento_habilitado", "1") == "1",
+        label_position=ft.LabelPosition.LEFT,
+        on_change=discount_changed
+    )
+
     settings_card = section.card(
         ft.Column([
             ft.Row([
@@ -31,6 +42,15 @@ def dark_mode(page: ft.Page):
             ft.Row([
                 ft.Text("Cambiar entre modo claro y oscuro", size=14),
                 theme_switch
+            ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
+            ft.Divider(),
+            ft.Row([
+                ft.Icon(ft.Icons.PERCENT, size=24, color=section.ACCENT),
+                ft.Text("Ventas", size=18, weight=ft.FontWeight.BOLD)
+            ], spacing=10),
+            ft.Row([
+                ft.Text("Permitir descuentos en el punto de venta", size=14),
+                discount_switch
             ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN)
         ], spacing=15),
         width=section.FORM_WIDTH

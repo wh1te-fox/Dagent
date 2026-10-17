@@ -4,10 +4,18 @@ import flet as ft
 
 def input_sale(page: ft.Page):
     """Renders the sales processing interface."""
-    from services.database import obtener_clientes, obtener_producto_por_codigo, guardar_venta, guardar_venta_con_credito
+    from services.database import (
+        obtener_clientes,
+        obtener_producto_por_codigo,
+        guardar_venta,
+        guardar_venta_con_credito,
+        descuento_habilitado,
+    )
     from views.components import section
 
     section.setup(page, "Punto de venta")
+
+    descuento_activo = descuento_habilitado()
 
     current_product = None
 
@@ -67,7 +75,7 @@ def input_sale(page: ft.Page):
 
             subtotal = quantity * price
 
-            discount = float(discount_field.value or 0)
+            discount = float(discount_field.value or 0) if descuento_activo else 0.0
 
             if discount < 0 or discount > 100:
                 subtotal_text.value = "Descuento debe estar entre 0 y 100"
@@ -141,7 +149,7 @@ def input_sale(page: ft.Page):
             return
 
         try:
-            discount = float(discount_field.value or 0)
+            discount = float(discount_field.value or 0) if descuento_activo else 0.0
 
             if discount < 0 or discount > 100:
                 discount_field.error_text = (
@@ -329,7 +337,8 @@ def input_sale(page: ft.Page):
         on_change=calculate_total,
         width=350,
         border_radius=10,
-        prefix_icon=ft.Icons.PERCENT
+        prefix_icon=ft.Icons.PERCENT,
+        visible=descuento_activo
     )
 
     client_options = [ft.dropdown.Option(key="", text="-- Seleccione cliente --")]

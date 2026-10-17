@@ -167,8 +167,8 @@ def credits_page(page: ft.Page):
         section.spacer(16),
         ft.Row(
             [
-                ft.Row([btn_nuevo, btn_close], spacing=15, wrap=True, run_spacing=10),
                 search_field,
+                ft.Row([btn_nuevo, btn_close], spacing=15, wrap=True, run_spacing=10),
             ],
             alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
             vertical_alignment=ft.CrossAxisAlignment.CENTER,

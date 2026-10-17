@@ -67,6 +67,13 @@ def crear_bd():
     if "pagado" not in columnas:
         cursor.execute("ALTER TABLE creditos ADD COLUMN pagado REAL NOT NULL DEFAULT 0")
 
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS configuracion (
+            clave TEXT PRIMARY KEY,
+            valor TEXT NOT NULL
+        )
+    """)
+
     conn.commit()
     conn.close()
 
@@ -493,3 +500,39 @@ def obtener_resumen_creditos():
     resumen = cursor.fetchone()
     conn.close()
     return resumen
+
+
+def _asegurar_tabla_config(cursor):
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS configuracion (
+            clave TEXT PRIMARY KEY,
+            valor TEXT NOT NULL
+        )
+    """)
+
+
+def obtener_config(clave, defecto=None):
+    conn = conectar()
+    cursor = conn.cursor()
+    _asegurar_tabla_config(cursor)
+    cursor.execute("SELECT valor FROM configuracion WHERE clave = ?", (clave,))
+    fila = cursor.fetchone()
+    conn.close()
+    return fila[0] if fila else defecto
+
+
+def guardar_config(clave, valor):
+    conn = conectar()
+    cursor = conn.cursor()
+    _asegurar_tabla_config(cursor)
+    cursor.execute("""
+        INSERT INTO configuracion (clave, valor)
+        VALUES (?, ?)
+        ON CONFLICT(clave) DO UPDATE SET valor = excluded.valor
+    """, (clave, str(valor)))
+    conn.commit()
+    conn.close()
+
+
+def descuento_habilitado():
+    return obtener_config("descuento_habilitado", "1") == "1"
