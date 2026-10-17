@@ -56,10 +56,16 @@ def crear_bd():
             monto REAL NOT NULL,
             descripcion TEXT,
             fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
+            pagado REAL NOT NULL DEFAULT 0,
             FOREIGN KEY (cliente_id)
                 REFERENCES clientes(id)
         )
     """)
+
+    cursor.execute("PRAGMA table_info(creditos)")
+    columnas = [col[1] for col in cursor.fetchall()]
+    if "pagado" not in columnas:
+        cursor.execute("ALTER TABLE creditos ADD COLUMN pagado REAL NOT NULL DEFAULT 0")
 
     conn.commit()
     conn.close()
@@ -358,13 +364,70 @@ def actualizar_cliente(id, nombre, apellido):
     conn.close()
 
 
-def guardar_credito(cliente_id, monto, descripcion):
+def guardar_credito(cliente_id, monto, descripcion, pagado=0):
     conn = conectar()
     cursor = conn.cursor()
     cursor.execute("""
-        INSERT INTO creditos (cliente_id, monto, descripcion)
-        VALUES (?, ?, ?)
-    """, (cliente_id, monto, descripcion))
+        INSERT INTO creditos (cliente_id, monto, descripcion, pagado)
+        VALUES (?, ?, ?, ?)
+    """, (cliente_id, monto, descripcion, pagado))
+    conn.commit()
+    conn.close()
+
+
+def guardar_venta_con_credito(producto_id, codigo, producto, cantidad, precio, subtotal, descuento, total, abono, cliente_id, descripcion_credito):
+    """Saves the sale and, when the cash payment does not cover the total,
+    registers the remaining balance as a credit for the client in one transaction."""
+    if abono < 0 or abono > total + 1e-9:
+        raise ValueError("El abono debe estar entre 0 y el total de la venta")
+    if abono < total - 1e-9 and cliente_id is None:
+        raise ValueError("Se requiere un cliente para registrar la venta a crédito")
+
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT existencia FROM productos WHERE id = ?", (producto_id,))
+    row = cursor.fetchone()
+    if not row or row[0] < cantidad:
+        conn.close()
+        raise ValueError("Stock insuficiente para realizar la venta")
+
+    cursor.execute("""
+        INSERT INTO ventas (
+            producto_id,
+            codigo,
+            producto,
+            cantidad,
+            precio,
+            subtotal,
+            descuento,
+            total
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        producto_id,
+        codigo,
+        producto,
+        cantidad,
+        precio,
+        subtotal,
+        descuento,
+        total
+    ))
+
+    cursor.execute("""
+        UPDATE productos
+        SET existencia = existencia - ?
+        WHERE id = ?
+    """, (cantidad, producto_id))
+
+    pendiente = total - abono
+    if pendiente > 1e-9:
+        cursor.execute("""
+            INSERT INTO creditos (cliente_id, monto, descripcion, pagado)
+            VALUES (?, ?, ?, 0)
+        """, (cliente_id, pendiente, descripcion_credito))
+
     conn.commit()
     conn.close()
 
@@ -380,7 +443,8 @@ def obtener_creditos():
             cli.apellido,
             c.monto,
             c.descripcion,
-            c.fecha
+            c.fecha,
+            c.pagado
         FROM creditos c
         LEFT JOIN clientes cli ON c.cliente_id = cli.id
         ORDER BY c.id DESC
@@ -388,3 +452,44 @@ def obtener_creditos():
     creditos = cursor.fetchall()
     conn.close()
     return creditos
+
+
+def registrar_abono(credito_id, monto):
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT monto, pagado FROM creditos WHERE id = ?", (credito_id,))
+    row = cursor.fetchone()
+    if not row:
+        conn.close()
+        raise ValueError("El crédito no existe")
+
+    total, pagado = row
+    saldo = total - pagado
+
+    if monto <= 0:
+        conn.close()
+        raise ValueError("El abono debe ser mayor que cero")
+    if monto > saldo + 1e-9:
+        conn.close()
+        raise ValueError(f"El abono excede el saldo pendiente (${saldo:.2f})")
+
+    cursor.execute("UPDATE creditos SET pagado = pagado + ? WHERE id = ?", (monto, credito_id))
+    conn.commit()
+    conn.close()
+
+
+def obtener_resumen_creditos():
+    conn = conectar()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT
+            COALESCE(SUM(monto), 0),
+            COALESCE(SUM(pagado), 0),
+            COALESCE(SUM(monto - pagado), 0),
+            COALESCE(SUM(CASE WHEN monto - pagado > 0.009 THEN 1 ELSE 0 END), 0)
+        FROM creditos
+    """)
+    resumen = cursor.fetchone()
+    conn.close()
+    return resumen
