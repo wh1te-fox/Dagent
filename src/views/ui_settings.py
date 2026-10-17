@@ -1,15 +1,12 @@
 """Settings view module for application configuration."""
 import flet as ft
 from views.menu_interface import dash_board
+from views.components import section
 
 
 def dark_mode(page: ft.Page):
     """Renders the settings view for theme configuration and appearance."""
-    page.controls.clear()
-    page.title = "Configuraciones"
-    page.padding = 30
-    page.vertical_alignment = ft.MainAxisAlignment.START
-    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+    section.setup(page, "Configuración")
 
     def theme_changed(e):
         page.theme_mode = (
@@ -17,47 +14,47 @@ def dark_mode(page: ft.Page):
             if page.theme_mode == ft.ThemeMode.LIGHT
             else ft.ThemeMode.LIGHT
         )
-        page.update()    
+        page.update()
 
-    theme_switch = ft.Switch( 
-        label_position=ft.LabelPosition.LEFT, 
+    theme_switch = ft.Switch(
+        label_position=ft.LabelPosition.LEFT,
         on_change=theme_changed
     )
 
-    settings_card = ft.Card(
-        content=ft.Container(
-            content=ft.Column([
-                ft.Row([
-                    ft.Icon(ft.Icons.PALETTE_OUTLINED, size=24, color=ft.Colors.BLUE_400),
-                    ft.Text("Apariencia y Tema", size=18, weight=ft.FontWeight.BOLD)
-                ], spacing=10),
-                ft.Divider(),
-                ft.Row([
-                    ft.Text("Cambiar entre modo claro y oscuro", size=14),
-                    theme_switch
-                ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN)
-            ], spacing=15),
-            padding=25,
-            width=450
+    settings_card = section.card(
+        ft.Column([
+            ft.Row([
+                ft.Icon(ft.Icons.PALETTE_OUTLINED, size=24, color=section.ACCENT),
+                ft.Text("Apariencia y Tema", size=18, weight=ft.FontWeight.BOLD)
+            ], spacing=10),
+            ft.Divider(),
+            ft.Row([
+                ft.Text("Cambiar entre modo claro y oscuro", size=14),
+                theme_switch
+            ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN)
+        ], spacing=15),
+        width=section.FORM_WIDTH
+    )
+
+    back_button = section.secondary_button(
+        ft.Button(
+            content=ft.Row([ft.Icon(ft.Icons.ARROW_BACK, size=18), ft.Text("Volver")], alignment=ft.MainAxisAlignment.CENTER, spacing=5),
+            on_click=lambda _: dash_board(page),
+            width=160,
         )
     )
 
-    back_button = ft.Button(
-        content=ft.Row([ft.Icon(ft.Icons.ARROW_BACK, size=18), ft.Text("Volver")], alignment=ft.MainAxisAlignment.CENTER, spacing=5),
-        on_click=lambda _: dash_board(page),
-        width=160,
-        height=45
+    header_row = section.header(
+        ft.Icons.SETTINGS,
+        "Configuración",
+        "Personaliza el comportamiento y aspecto de la aplicación"
     )
-
-    header_row = ft.Row([
-        ft.Text("Configuraciones", size=30, weight=ft.FontWeight.W_900, selectable=True)
-    ], alignment=ft.MainAxisAlignment.CENTER, spacing=15)
 
     page.add(
         header_row,
-        ft.Divider(height=40, color=ft.Colors.TRANSPARENT),
+        section.spacer(20),
         settings_card,
-        ft.Divider(height=30, color=ft.Colors.TRANSPARENT),
+        section.spacer(16),
         back_button
     )
     page.update()
