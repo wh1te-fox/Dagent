@@ -5,15 +5,12 @@ import flet as ft
 def customer_page(page: ft.Page):
     """Renders the client registration interface."""
     from views.components.button import Control_b
+    from views.components import section
     from views.components.text_field import InputModel
     from views.menu_interface import dash_board
     from services.database import cliente_existe, guardar_cliente
-    
-    page.title = "Registrar Clientes"
-    page.padding = 30
-    page.vertical_alignment = ft.MainAxisAlignment.START
-    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
-    page.controls.clear()
+
+    section.setup(page, "Registrar Clientes")
 
     name_input = InputModel("Nombre").entry_style()
     name_input.width = 350
@@ -90,25 +87,23 @@ def customer_page(page: ft.Page):
     def cancel_click(p):
         dash_board(p)
 
-    save_button = Control_b("Guardar", save_client_click, page).view()
-    cancel_button = Control_b("Cancelar", cancel_click, page).view()
+    save_button = section.primary_button(
+        Control_b("Guardar", save_client_click, page, icon=ft.Icons.SAVE).view()
+    )
+    cancel_button = section.secondary_button(
+        Control_b("Cancelar", cancel_click, page, icon=ft.Icons.CANCEL).view()
+    )
 
-    header_row = ft.Row([
-        ft.Icon(ft.Icons.PERSON_ADD, size=32, color=ft.Colors.BLUE),
-        ft.Text("Registrar Clientes", size=30, weight=ft.FontWeight.W_900, selectable=True)
-    ], alignment=ft.MainAxisAlignment.CENTER, spacing=15)
+    header_row = section.header(ft.Icons.PERSON_ADD, "Registrar Clientes", "Da de alta clientes en el sistema")
 
-    form_card = ft.Card(
-        content=ft.Container(
-            content=ft.Column([
-                name_input,
-                last_name_input,
-                ft.Divider(),
-                message_text
-            ], spacing=15, horizontal_alignment=ft.CrossAxisAlignment.CENTER),
-            padding=25,
-            width=450
-        )
+    form_card = section.card(
+        ft.Column([
+            name_input,
+            last_name_input,
+            ft.Divider(),
+            message_text
+        ], spacing=15, horizontal_alignment=ft.CrossAxisAlignment.CENTER),
+        width=section.FORM_WIDTH
     )
 
     buttons_row = ft.Row(
@@ -119,9 +114,9 @@ def customer_page(page: ft.Page):
 
     page.add(
         header_row,
-        ft.Divider(height=20, color=ft.Colors.TRANSPARENT),
+        section.spacer(20),
         form_card,
-        ft.Divider(height=20, color=ft.Colors.TRANSPARENT),
+        section.spacer(16),
         buttons_row
     )
     page.update()
