@@ -5,15 +5,12 @@ import flet as ft
 def credit_page(page: ft.Page):
     """Renders the credit registration interface."""
     from views.components.button import Control_b
+    from views.components import section
     from views.components.text_field import InputModel
     from views.menu_interface import dash_board
     from services.database import obtener_clientes, guardar_credito
 
-    page.title = "Registrar Crédito"
-    page.padding = 30
-    page.vertical_alignment = ft.MainAxisAlignment.START
-    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
-    page.controls.clear()
+    section.setup(page, "Registrar Crédito")
 
     clientes = obtener_clientes()
 
@@ -26,7 +23,7 @@ def credit_page(page: ft.Page):
         options=client_options,
         width=350,
         border_radius=10,
-        prefix_icon=ft.Icons.PERSON
+        leading_icon=ft.Icons.PERSON
     )
 
     amount_input = InputModel("Monto").entry_style()
@@ -81,39 +78,37 @@ def credit_page(page: ft.Page):
     def cancel_click(p):
         dash_board(p)
 
-    save_btn = Control_b("Guardar", guardar_credito_click, page).view()
-    cancel_btn = Control_b("Cancelar", cancel_click, page).view()
+    save_button = section.primary_button(Control_b("Guardar", guardar_credito_click, page, icon=ft.Icons.SAVE).view())
+    cancel_button = section.secondary_button(Control_b("Cancelar", cancel_click, page, icon=ft.Icons.CANCEL).view())
 
-    header_row = ft.Row([
-        ft.Icon(ft.Icons.CREDIT_CARD, size=32, color=ft.Colors.BLUE),
-        ft.Text("Registrar Crédito", size=30, weight=ft.FontWeight.W_900, selectable=True)
-    ], alignment=ft.MainAxisAlignment.CENTER, spacing=15)
+    header_row = section.header(
+        ft.Icons.CREDIT_CARD,
+        "Registrar Crédito",
+        "Da de alta créditos y cuentas por cobrar",
+    )
 
-    form_card = ft.Card(
-        content=ft.Container(
-            content=ft.Column([
-                client_dropdown,
-                amount_input,
-                desc_input,
-                ft.Divider(),
-                message_text
-            ], spacing=15, horizontal_alignment=ft.CrossAxisAlignment.CENTER),
-            padding=25,
-            width=450
-        )
+    form_card = section.card(
+        ft.Column([
+            client_dropdown,
+            amount_input,
+            desc_input,
+            ft.Divider(),
+            message_text
+        ], spacing=15, horizontal_alignment=ft.CrossAxisAlignment.CENTER),
+        width=section.FORM_WIDTH
     )
 
     buttons_row = ft.Row(
-        controls=[save_btn, cancel_btn],
+        controls=[save_button, cancel_button],
         alignment=ft.MainAxisAlignment.CENTER,
         spacing=20
     )
 
     page.add(
         header_row,
-        ft.Divider(height=20, color=ft.Colors.TRANSPARENT),
+        section.spacer(20),
         form_card,
-        ft.Divider(height=20, color=ft.Colors.TRANSPARENT),
+        section.spacer(16),
         buttons_row
     )
 
