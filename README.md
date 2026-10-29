@@ -74,8 +74,7 @@ venv\Scripts\activate
 ### 3. Instalar dependencias
 
 ```bash
-pip install --upgrade pip
-pip install -r requirements.txt
+pip install flet
 
 ```
 
@@ -86,13 +85,21 @@ python src/page.py
 
 ```
 
----
+### 5. Compilar la aplicación
+
+El script instala las dependencias necesarias, prepara el entorno de compilación y empaqueta la aplicación en un único ejecutable.
+
+```bash
+# Linux o Windows
+python build.py
+
+````
 
 ##  Novedades (Rama Activa)
 
 Las últimas actualizaciones integradas en la nueva rama incluyen:
 
-*  **Consultas SQL optimizadas:** Refactorización en los módulos de búsqueda y productos (`Code/SQL/`).
+*  **Consultas SQL optimizadas:** Refactorización en los módulos de búsqueda y productos.
 *  **Mejoras en la interfaz:** Flujo de entrada de datos y actualización de clientes simplificados.
 *  **Refactorización de código:** Modularización limpia de controladores y compatibilidad asegurada con Python 3.12+.
 

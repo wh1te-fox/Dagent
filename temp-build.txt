@@ -1,0 +1,3 @@
+```
+python -m PyInstaller --noconfirm --clean --onefile --windowed --name Dagent --paths src --icon src\assets\logo.ico --add-data "src\assets;assets" --collect-all flet src\page.py
+```
