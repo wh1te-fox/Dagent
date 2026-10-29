@@ -107,4 +107,4 @@ Las últimas actualizaciones integradas en la nueva rama incluyen:
 
 ##  Licencia
 
-Distribuido bajo la licencia **GPL-3.0**. Consulta el archivo [`LICENSE`](https://www.google.com/search?q=LICENSE) para obtener más información.
+Distribuido bajo la licencia **GPL-3.0**. Consulta [`LICENSE`](https://www.gnu.org/licenses/gpl-3.0.en.html) para obtener más información.
