@@ -4,7 +4,7 @@ import flet as ft
 
 def input_sale(page: ft.Page):
     """Renders the sales processing interface."""
-    from services.database import obtener_clientes, obtener_producto_por_codigo, guardar_venta, guardar_venta_con_credito
+    from services.database import obtener_clientes, obtener_producto_por_codigo, guardar_venta, save_sale_with_credit
     from views.components import section
 
     section.setup(page, "Punto de venta")
@@ -213,7 +213,7 @@ def input_sale(page: ft.Page):
                     total
                 )
             else:
-                guardar_venta_con_credito(
+                save_sale_with_credit(
                     current_product[0],
                     current_product[1],
                     current_product[2],
