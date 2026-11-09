@@ -109,6 +109,6 @@ The latest updates integrated into the new branch include:
 
 ##  License
 
-Distributed under the **GPL-3.0** license. See the [`LICENSE`](LICENSE) file for more information.
+Distributed under the **GPL-3.0** license. See [`LICENSE`](https://www.gnu.org/licenses/gpl-3.0.en.html) for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
