@@ -4,8 +4,15 @@ import flet as ft
 
 def dash_board(page: ft.Page):
     """Builds the application shell (sidebar + content) and opens the dashboard."""
-    from services.database import crear_bd
+    from services.auth import active_session
+    from services.database import create_database
     from views.layouts.app_layout import AppLayout
+
+    # Session guard: without valid credentials the shell is never mounted.
+    if not active_session(page):
+        from views.login_view import login
+        login(page)
+        return
 
     # Validation: if the app shell is already mounted (e.g. a view calls
     # dash_board to "go back"), do not rebuild the layout - that would nest a
@@ -20,7 +27,7 @@ def dash_board(page: ft.Page):
     page.horizontal_alignment = ft.CrossAxisAlignment.START
     page.padding = 0
     page.controls.clear()
-    crear_bd()
+    create_database()
 
     layout = AppLayout(page)
     page.add(layout.build())
