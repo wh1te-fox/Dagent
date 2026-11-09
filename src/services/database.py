@@ -1,15 +1,14 @@
 import sqlite3
 
-
 DB_NAME = "ventas.db"
 
 
-def conectar():
+def connect_db():
     return sqlite3.connect(DB_NAME)
 
 
-def crear_bd():
-    conn = conectar()
+def create_database():
+    conn = connect_db()
     cursor = conn.cursor()
 
     cursor.execute("""
@@ -62,6 +61,15 @@ def crear_bd():
         )
     """)
 
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS usuarios (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            usuario TEXT NOT NULL UNIQUE,
+            password_hash TEXT NOT NULL,
+            creado_en DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+
     cursor.execute("PRAGMA table_info(creditos)")
     columnas = [col[1] for col in cursor.fetchall()]
     if "pagado" not in columnas:
@@ -72,7 +80,7 @@ def crear_bd():
 
 
 def guardar_producto(codigo, nombre, categoria, precio, existencia):
-    conn = conectar()
+    conn = connect_db()
     cursor = conn.cursor()
 
     cursor.execute("""
@@ -97,7 +105,7 @@ def guardar_producto(codigo, nombre, categoria, precio, existencia):
 
 
 def obtener_producto_por_codigo(codigo):
-    conn = conectar()
+    conn = connect_db()
     cursor = conn.cursor()
 
     cursor.execute("""
@@ -120,7 +128,7 @@ def obtener_producto_por_codigo(codigo):
 
 
 def obtener_productos():
-    conn = conectar()
+    conn = connect_db()
     cursor = conn.cursor()
 
     cursor.execute("""
@@ -143,7 +151,7 @@ def obtener_productos():
 
 
 def buscar_productos(termino=""):
-    conn = conectar()
+    conn = connect_db()
     cursor = conn.cursor()
 
     query = """
@@ -168,7 +176,7 @@ def buscar_productos(termino=""):
 
 
 def actualizar_producto_stock(producto_id, existencia):
-    conn = conectar()
+    conn = connect_db()
     cursor = conn.cursor()
 
     cursor.execute("""
@@ -191,7 +199,7 @@ def guardar_venta(
     descuento,
     total
 ):
-    conn = conectar()
+    conn = connect_db()
     cursor = conn.cursor()
 
     cursor.execute("SELECT existencia FROM productos WHERE id = ?", (producto_id,))
@@ -234,7 +242,7 @@ def guardar_venta(
 
 
 def obtener_ventas(filtro="todos", valor=None, valor_hasta=None):
-    conn = conectar()
+    conn = connect_db()
     cursor = conn.cursor()
 
     query = """
@@ -274,7 +282,7 @@ def obtener_ventas(filtro="todos", valor=None, valor_hasta=None):
 
 
 def guardar_cliente(nombre, apellido):
-    conn = conectar()
+    conn = connect_db()
     cursor = conn.cursor()
 
     cursor.execute("""
@@ -293,7 +301,7 @@ def guardar_cliente(nombre, apellido):
 
 
 def obtener_clientes():
-    conn = conectar()
+    conn = connect_db()
     cursor = conn.cursor()
 
     cursor.execute("""
@@ -312,7 +320,7 @@ def obtener_clientes():
 
 
 def buscar_clientes(nombre="", apellido=""):
-    conn = conectar()
+    conn = connect_db()
     cursor = conn.cursor()
 
     query = """
@@ -342,7 +350,7 @@ def buscar_clientes(nombre="", apellido=""):
 
 
 def cliente_existe(nombre, apellido):
-    conn = conectar()
+    conn = connect_db()
     cursor = conn.cursor()
     cursor.execute("""
         SELECT id FROM clientes WHERE LOWER(nombre) = LOWER(?) AND LOWER(apellido) = LOWER(?)
@@ -353,7 +361,7 @@ def cliente_existe(nombre, apellido):
 
 
 def actualizar_cliente(id, nombre, apellido):
-    conn = conectar()
+    conn = connect_db()
     cursor = conn.cursor()
     cursor.execute("""
         UPDATE clientes
@@ -365,7 +373,7 @@ def actualizar_cliente(id, nombre, apellido):
 
 
 def guardar_credito(cliente_id, monto, descripcion, pagado=0):
-    conn = conectar()
+    conn = connect_db()
     cursor = conn.cursor()
     cursor.execute("""
         INSERT INTO creditos (cliente_id, monto, descripcion, pagado)
@@ -375,20 +383,22 @@ def guardar_credito(cliente_id, monto, descripcion, pagado=0):
     conn.close()
 
 
-def guardar_venta_con_credito(producto_id, codigo, producto, cantidad, precio, subtotal, descuento, total, abono, cliente_id, descripcion_credito):
+def save_sale_with_credit(
+    product_id, code, product, quantity, price, subtotal, discount, total, payment, client_id, credit_description
+):
     """Saves the sale and, when the cash payment does not cover the total,
     registers the remaining balance as a credit for the client in one transaction."""
-    if abono < 0 or abono > total + 1e-9:
+    if payment < 0 or payment > total + 1e-9:
         raise ValueError("El abono debe estar entre 0 y el total de la venta")
-    if abono < total - 1e-9 and cliente_id is None:
+    if payment < total - 1e-9 and client_id is None:
         raise ValueError("Se requiere un cliente para registrar la venta a crédito")
 
-    conn = conectar()
+    conn = connect_db()
     cursor = conn.cursor()
 
-    cursor.execute("SELECT existencia FROM productos WHERE id = ?", (producto_id,))
+    cursor.execute("SELECT existencia FROM productos WHERE id = ?", (product_id,))
     row = cursor.fetchone()
-    if not row or row[0] < cantidad:
+    if not row or row[0] < quantity:
         conn.close()
         raise ValueError("Stock insuficiente para realizar la venta")
 
@@ -405,13 +415,13 @@ def guardar_venta_con_credito(producto_id, codigo, producto, cantidad, precio, s
         )
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     """, (
-        producto_id,
-        codigo,
-        producto,
-        cantidad,
-        precio,
+        product_id,
+        code,
+        product,
+        quantity,
+        price,
         subtotal,
-        descuento,
+        discount,
         total
     ))
 
@@ -419,21 +429,21 @@ def guardar_venta_con_credito(producto_id, codigo, producto, cantidad, precio, s
         UPDATE productos
         SET existencia = existencia - ?
         WHERE id = ?
-    """, (cantidad, producto_id))
+    """, (quantity, product_id))
 
-    pendiente = total - abono
-    if pendiente > 1e-9:
+    balance = total - payment
+    if balance > 1e-9:
         cursor.execute("""
             INSERT INTO creditos (cliente_id, monto, descripcion, pagado)
             VALUES (?, ?, ?, 0)
-        """, (cliente_id, pendiente, descripcion_credito))
+        """, (client_id, balance, credit_description))
 
     conn.commit()
     conn.close()
 
 
 def obtener_creditos():
-    conn = conectar()
+    conn = connect_db()
     cursor = conn.cursor()
     cursor.execute("""
         SELECT
@@ -455,7 +465,7 @@ def obtener_creditos():
 
 
 def registrar_abono(credito_id, monto):
-    conn = conectar()
+    conn = connect_db()
     cursor = conn.cursor()
 
     cursor.execute("SELECT monto, pagado FROM creditos WHERE id = ?", (credito_id,))
@@ -479,8 +489,73 @@ def registrar_abono(credito_id, monto):
     conn.close()
 
 
+def create_user(username, password_hash):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        INSERT INTO usuarios (
+            usuario,
+            password_hash
+        )
+        VALUES (?, ?)
+    """, (
+        username,
+        password_hash
+    ))
+
+    conn.commit()
+    conn.close()
+
+
+def get_user_by_name(username):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT
+            id,
+            usuario,
+            password_hash
+        FROM usuarios
+        WHERE LOWER(usuario) = LOWER(?)
+    """, (username,))
+
+    user_record = cursor.fetchone()
+
+    conn.close()
+
+    return user_record
+
+
+def count_users():
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT COUNT(*) FROM usuarios")
+    total = cursor.fetchone()[0]
+
+    conn.close()
+
+    return total
+
+
+def update_password(username, password_hash):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        UPDATE usuarios
+        SET password_hash = ?
+        WHERE LOWER(usuario) = LOWER(?)
+    """, (password_hash, username))
+
+    conn.commit()
+    conn.close()
+
+
 def obtener_resumen_creditos():
-    conn = conectar()
+    conn = connect_db()
     cursor = conn.cursor()
     cursor.execute("""
         SELECT
