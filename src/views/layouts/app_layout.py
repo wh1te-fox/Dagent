@@ -14,9 +14,11 @@ class ContentProxy:
     """Adapter that redirects the view API (page.controls, page.add, etc.)
     to the content area of the layout instead of the whole page."""
 
-    def __init__(self, page, content):
+    def __init__(self, page, content, body=None):
         object.__setattr__(self, "_page", page)
         object.__setattr__(self, "_content", content)
+        # Optional wrapper container that actually supports padding.
+        object.__setattr__(self, "_body", body)
 
     @property
     def controls(self):
@@ -32,9 +34,15 @@ class ContentProxy:
         return getattr(self._page, name)
 
     def __setattr__(self, name, value):
-        if name in ("_page", "_content"):
+        if name in ("_page", "_content", "_body"):
             object.__setattr__(self, name, value)
-        elif name in ("padding", "vertical_alignment", "horizontal_alignment"):
+        elif name == "padding":
+            # The content column has no padding property; forward it to its
+            # wrapper container so sections actually get their margins.
+            if self._body is not None:
+                self._body.padding = value
+            self._page.padding = value
+        elif name in ("vertical_alignment", "horizontal_alignment"):
             setattr(self._content, name, value)
         else:
             setattr(self._page, name, value)
@@ -55,11 +63,12 @@ class AppLayout:
     def _build_sections(self):
         """Maps sidebar entries to real views. Entries without an implementation
         are marked with a status badge and render a pending placeholder."""
-        from views import dashboard_view, pending_view
+        from views import dashboard_view
         from views.add_client import customer_page
-        from views.credits_view import credits_page
         from views.add_product import main as add_product_view
         from views.cash_view import show as cash_view
+        from views.change_password import show as change_password_view
+        from views.credits_view import credits_page
         from views.inventory_view import inventory_page
         from views.page_sale import input_sale
         from views.report_view import list_report
@@ -137,12 +146,24 @@ class AppLayout:
                 "selected_icon": ft.Icons.SETTINGS,
                 "view": dark_mode,
             },
+            {
+                "key": "password",
+                "label": "Cambiar contraseña",
+                "icon": ft.Icons.PASSWORD,
+                "selected_icon": ft.Icons.PASSWORD,
+                "view": change_password_view,
+                "hidden": True,
+            },
         ]
 
     def build(self):
         """Assembles the shell and returns the root control."""
         self.header_title = ft.Text("", size=20, weight=ft.FontWeight.W_800, expand=True)
         self.content_column = ft.Column(scroll=ft.ScrollMode.AUTO, expand=True)
+        # The content column itself does not support padding (Flet Column has
+        # no such property), so it is wrapped in a Container that receives the
+        # section padding applied by views through ContentProxy.
+        self.content_body = ft.Container(content=self.content_column, expand=True)
 
         header = ft.Container(
             content=self.header_title,
@@ -153,7 +174,7 @@ class AppLayout:
         )
 
         content_area = ft.Container(
-            content=ft.Column([header, self.content_column], spacing=0, expand=True),
+            content=ft.Column([header, self.content_body], spacing=0, expand=True),
             expand=True,
         )
 
@@ -203,16 +224,22 @@ class AppLayout:
         )
 
         items = ft.Column(
-            [self._nav_item(section) for section in self.sections],
+            [self._nav_item(section) for section in self.sections if not section.get("hidden")],
             spacing=4,
             scroll=ft.ScrollMode.AUTO,
             expand=True,
         )
 
+        logout_item = self._logout_item()
+
         return ft.Container(
             width=EXPANDED_WIDTH if self.expanded else COLLAPSED_WIDTH,
             padding=12,
-            content=ft.Column([header, ft.Container(height=8), items], spacing=0, expand=True),
+            content=ft.Column(
+                [header, ft.Container(height=8), items, logout_item],
+                spacing=0,
+                expand=True,
+            ),
             border=ft.Border.only(
                 right=ft.BorderSide(1, ft.Colors.with_opacity(0.12, ft.Colors.GREY))
             ),
@@ -270,6 +297,31 @@ class AppLayout:
             on_click=lambda e, key=section["key"]: self.open_section(key),
         )
 
+    def _logout_item(self):
+        """Renders a fixed logout entry pinned at the bottom of the sidebar."""
+        from services.auth import logout
+
+        children = [ft.Icon(ft.Icons.LOGOUT, color=ft.Colors.RED_400, size=22)]
+        if self.expanded:
+            children.append(
+                ft.Text(
+                    "Cerrar sesión",
+                    size=14,
+                    color=ft.Colors.RED_400,
+                    weight=ft.FontWeight.W_500,
+                    expand=True,
+                )
+            )
+
+        return ft.Container(
+            content=ft.Row(children, spacing=12, vertical_alignment=ft.CrossAxisAlignment.CENTER),
+            tooltip="Cerrar sesión" if not self.expanded else None,
+            border_radius=10,
+            padding=ft.Padding.symmetric(vertical=11, horizontal=12),
+            ink=True,
+            on_click=lambda e: logout(self.page),
+        )
+
     def _toggle_sidebar(self, e=None):
         self.expanded = not self.expanded
         self.sidebar = self._build_sidebar()
@@ -297,7 +349,7 @@ class AppLayout:
             self.shell.controls[0] = self.sidebar
 
             self.content_column.controls.clear()
-            proxy = ContentProxy(self.page, self.content_column)
+            proxy = ContentProxy(self.page, self.content_column, self.content_body)
             section["view"](proxy)
             self.page.update()
         finally:
