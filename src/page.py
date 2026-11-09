@@ -1,58 +1,62 @@
 """Main application entry point module."""
-import flet as ft 
+import flet as ft
+
+from views.components import section
 
 
 def main(page: ft.Page):
-    """Renders the home/welcome view of the application."""
+    """Renders the home/welcome view with the same aesthetics as login."""
+    from views.components.button import Control_b
+    from views.login_view import login
+
     page.title = "Dagent - Bienvenido"
+    page.padding = 30
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
-    page.padding = 30
     page.controls.clear()
-
-    from views.components.button import Control_b
-    from views.menu_interface import dash_board
 
     logo_image = ft.Image(
         src="assets/logo.png",
-        width=120,
-        height=120,
+        width=110,
+        height=110,
         fit="contain"
     )
 
     welcome_text = ft.Text(
         "Te damos la bienvenida",
-        size=28,
+        size=24,
         weight=ft.FontWeight.W_900,
         text_align=ft.TextAlign.CENTER
     )
 
     subtitle_text = ft.Text(
         "Sistema de Gestión de Ventas, Productos y Clientes",
-        size=14,
-        color=ft.Colors.GREY_700,
+        size=13,
+        color=ft.Colors.GREY_600,
         text_align=ft.TextAlign.CENTER
     )
 
-    use_class = Control_b("Ingresar al Sistema", dash_board, page)
-    enter_button = use_class.view()
+    enter_button = Control_b("Ingresar al Sistema", login, page).view()
+    section.primary_button(enter_button)
 
-    welcome_card = ft.Card(
-        content=ft.Container(
-            content=ft.Column([
+    welcome_card = section.card(
+        ft.Column(
+            [
                 logo_image,
                 welcome_text,
                 subtitle_text,
-                ft.Divider(height=20, color=ft.Colors.TRANSPARENT),
-                enter_button
-            ], spacing=20, horizontal_alignment=ft.CrossAxisAlignment.CENTER),
-            padding=35,
-            width=420
-        )
+                ft.Divider(height=12, color=ft.Colors.TRANSPARENT),
+                enter_button,
+            ],
+            spacing=14,
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+        ),
+        width=420,
+        padding=32,
     )
 
     page.add(welcome_card)
     page.update()
-    
+
 if __name__ == "__main__":
     ft.run(main)
