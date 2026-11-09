@@ -20,6 +20,8 @@
     <a href="#-novedades">Novedades</a>
   </p>
 
+  **Español** | [English](README.en.md)
+
 </div>
 
 ---
@@ -108,3 +110,5 @@ Las últimas actualizaciones integradas en la nueva rama incluyen:
 ##  Licencia
 
 Distribuido bajo la licencia **GPL-3.0**. Consulta [`LICENSE`](https://www.gnu.org/licenses/gpl-3.0.en.html) para obtener más información.
+
+<p align="right">(<a href="#readme-top">volver arriba</a>)</p>
